@@ -1,4 +1,4 @@
 package ru.skyteam.pettelegrambot.repository;
 
-public interface PetParentIDRepository {
+public interface PetParentIDRepository{
 }
