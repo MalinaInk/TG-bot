@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <include file="changelog/table/create-shelter-table.xml"/>
+    <include file="changelog/table/create-photo-table.xml"/>
+    <include file="changelog/table/create-user-table.xml"/>
+    <include file="changelog/table/create-parent-pets-table.xml"/>
+    <include file="changelog/table/create-volunteer-table.xml"/>
+    <include file="changelog/table/create-pet-table.xml"/>
+    <include file="changelog/table/create-parent-table.xml"/>
+    <include file="changelog/table/create-report-table.xml"/>
+
+</databaseChangeLog>

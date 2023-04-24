@@ -1,13 +1,15 @@
 package ru.skyteam.pettelegrambot.entity;
 
 import jakarta.persistence.*;
+import java.util.List;
+
 
 @Entity
-@Table(name = "pet_parent")
-public class PetParent {
+@Table(name = "parent")
+
+public class Parent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     @Column(name = "id", nullable = false)
     private Long id;
 
@@ -24,25 +26,23 @@ public class PetParent {
     private Integer numberOfReportDays;
 
     @ManyToOne
-    @JoinColumn(name = "volunteer_id")
+    @JoinColumn(name = "volunteer_id", referencedColumnName = "id")
     private Volunteer volunteer;
 
-    @OneToOne
-    @JoinColumn(name = "pet_id")
-    private Pet pet;
+    @OneToMany(mappedBy = "parent")
+    private List<ParentPet> parentPets;
 
-    public PetParent() {
+    public Parent() {
     }
 
-    public PetParent(Long id, Long chatId, String fullName, String phoneNumber,
-                     Integer numberOfReportDays, Volunteer volunteer, Pet pet) {
+    public Parent(Long id, Long chatId, String fullName, String phoneNumber, Integer numberOfReportDays, Volunteer volunteer, List<ParentPet> parentPets) {
         this.id = id;
         this.chatId = chatId;
         this.fullName = fullName;
         this.phoneNumber = phoneNumber;
         this.numberOfReportDays = numberOfReportDays;
         this.volunteer = volunteer;
-        this.pet = pet;
+        this.parentPets = parentPets;
     }
 
     public Long getId() {
@@ -93,24 +93,24 @@ public class PetParent {
         this.volunteer = volunteer;
     }
 
-    public Pet getPet() {
-        return pet;
+    public List<ParentPet> getParentPets() {
+        return parentPets;
     }
 
-    public void setPet(Pet pet) {
-        this.pet = pet;
+    public void setParentPets(List<ParentPet> parentPets) {
+        this.parentPets = parentPets;
     }
 
     @Override
     public String toString() {
-        return "PetParent{" +
+        return "Parent{" +
                 "id=" + id +
                 ", chatId=" + chatId +
                 ", fullName='" + fullName + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", numberOfReportDays=" + numberOfReportDays +
                 ", volunteer=" + volunteer +
-                ", pet=" + pet +
+                ", parentPets=" + parentPets +
                 '}';
     }
 }

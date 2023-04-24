@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+
+    <changeSet id="create-parent-table.1" author="malinaink">
+
+        <preConditions>
+            <not>
+                <tableExists tableName="parent"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="parent">
+
+            <column name="id" autoIncrement="true" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+
+            <column name="chat_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="full_name" type="VARCHAR(32)">
+            </column>
+
+            <column name="phone_number" type="VARCHAR(16)">
+            </column>
+
+            <column name="number_of_report_days" type="INTEGER">
+            </column>
+
+            <column name="volunteer_id" type="BIGINT">
+            </column>
+
+
+        </createTable>
+
+        <createIndex tableName="parent" indexName="IDX_PETPARENT_FULLNAME_PHONENUMBER" unique="true">
+            <column name="full_name"/>
+            <column name="phone_number"/>
+
+        </createIndex>
+
+        <addForeignKeyConstraint baseTableName="parent" baseColumnNames="volunteer_id" constraintName="FK_VOLUNTEER_ID" referencedTableName="volunteer"
+                                 referencedColumnNames="id"/>
+
+    </changeSet>
+
+</databaseChangeLog>

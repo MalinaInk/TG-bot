@@ -1,26 +1,25 @@
+
 package ru.skyteam.pettelegrambot.entity;
 
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "photo")
+
 public class Photo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false)
     private Long id;
-    @Column(name = "file_id")
-    private String fileId;
+    @Column(name = "path_to_photo")
+    private String pathToPhoto;
 
-
-    public Photo(String fileId) {
-        this.fileId = fileId;
+    public Photo(Long id, String pathToPhoto) {
+        this.id = id;
+        this.pathToPhoto = pathToPhoto;
     }
 
     public Photo() {
-    }
-
-    public Photo(Long id, String fileId) {
-        this.id = id;
-        this.fileId = fileId;
     }
 
     public Long getId() {
@@ -31,19 +30,19 @@ public class Photo {
         this.id = id;
     }
 
-    public String getFileId() {
-        return fileId;
+    public String getPathToPhoto() {
+        return pathToPhoto;
     }
 
-    public void setFileId(String fileId) {
-        this.fileId = fileId;
+    public void setPathToPhoto(String pathToPhoto) {
+        this.pathToPhoto = pathToPhoto;
     }
 
     @Override
     public String toString() {
         return "Photo{" +
                 "id=" + id +
-                ", fileId='" + fileId + '\'' +
+                ", pathToPhoto='" + pathToPhoto + '\'' +
                 '}';
     }
 }

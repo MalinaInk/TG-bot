@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+
+    <changeSet id="create-report-table.1" author="malinaink">
+
+        <preConditions>
+            <not>
+                <tableExists tableName="report"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="report">
+
+            <column name="id" autoIncrement="true" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+
+            <column name="report_date" type="DATE">
+            </column>
+
+            <column name="pet_id" type="BIGINT">
+            </column>
+
+            <column name="parent_id" type="BIGINT">
+            </column>
+
+            <column name="pet_diet" type="TEXT">
+            </column>
+
+            <column name="health" type="TEXT">
+            </column>
+
+            <column name="changing_habits" type="TEXT">
+            </column>
+
+            <column name="photo_id" type="BIGINT">
+            </column>
+
+            <column name="is_correct" type="BOOLEAN">
+            </column>
+
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="report" baseColumnNames="parent_id" constraintName="FK_REPORT_PARENT_ID" referencedTableName="parent"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="report" baseColumnNames="pet_id" constraintName="FK_REPORT_PET_ID" referencedTableName="pet"
+                                 referencedColumnNames="id"/>
+        <addForeignKeyConstraint baseTableName="report" baseColumnNames="photo_id" constraintName="FK_REPORT_PHOTO_ID" referencedTableName="photo"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+</databaseChangeLog>

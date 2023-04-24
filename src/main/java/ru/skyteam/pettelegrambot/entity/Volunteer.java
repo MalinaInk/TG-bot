@@ -1,15 +1,14 @@
 package ru.skyteam.pettelegrambot.entity;
 
 import jakarta.persistence.*;
-
+import java.util.List;
 @Entity
 @Table(name = "volunteer")
 
 public class Volunteer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
-    @Column(name = "id", nullable = false)
+    @Column(name = "id", nullable = false, unique = true)
     private Long id;
 
     @Column(name = "chat_id")
@@ -18,18 +17,22 @@ public class Volunteer {
     @Column(name = "full_name")
     private String fullName;
 
-    @OneToOne
-    @Column(name = "shelter_type")
-    private Shelter shelterType;
+    @ManyToOne
+    @JoinColumn (name = "shelter_id", referencedColumnName = "id")
+    private Shelter shelter;
 
-    public Volunteer() {
-    }
+    @OneToMany(mappedBy = "volunteer")
+    private List<Parent> parents;
 
-    public Volunteer(Long id, Long chatId, String fullName, Shelter shelterType) {
+    public Volunteer(Long id, Long chatId, String fullName, Shelter shelter, List<Parent> parents) {
         this.id = id;
         this.chatId = chatId;
         this.fullName = fullName;
-        this.shelterType = shelterType;
+        this.shelter = shelter;
+        this.parents = parents;
+    }
+
+    public Volunteer() {
     }
 
     public Long getId() {
@@ -56,12 +59,20 @@ public class Volunteer {
         this.fullName = fullName;
     }
 
-    public Shelter getShelterType() {
-        return shelterType;
+    public Shelter getShelter() {
+        return shelter;
     }
 
-    public void setShelterType(Shelter shelterType) {
-        this.shelterType = shelterType;
+    public void setShelter(Shelter shelter) {
+        this.shelter = shelter;
+    }
+
+    public List<Parent> getParents() {
+        return parents;
+    }
+
+    public void setParents(List<Parent> parents) {
+        this.parents = parents;
     }
 
     @Override
@@ -70,7 +81,8 @@ public class Volunteer {
                 "id=" + id +
                 ", chatId=" + chatId +
                 ", fullName='" + fullName + '\'' +
-                ", shelterType=" + shelterType +
+                ", shelter=" + shelter +
+                ", parents=" + parents +
                 '}';
     }
 }

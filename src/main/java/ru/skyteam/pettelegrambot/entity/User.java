@@ -1,25 +1,24 @@
 package ru.skyteam.pettelegrambot.entity;
 
 import jakarta.persistence.*;
-
 @Entity
 @Table( name = "user")
+
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
-    @Column(name = "id", nullable = false)
+    @Column(name = "id", nullable = false, unique = true)
     private Long id;
 
     @Column(name = "chat_id")
     private Long chatId;
 
-    public User() {
-    }
-
     public User(Long id, Long chatId) {
         this.id = id;
         this.chatId = chatId;
+    }
+
+    public User() {
     }
 
     public Long getId() {

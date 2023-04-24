@@ -1,34 +1,46 @@
 package ru.skyteam.pettelegrambot.entity;
 
 import jakarta.persistence.*;
-
 import java.time.LocalDate;
+import java.util.List;
+
 
 @Entity
+@Table(name = "pet")
+
 public class Pet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
-    @Column(name = "id", nullable = false)
+    @Column(name = "id", nullable = false, unique = true)
     private Long id;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "pet_type")
+    private PetType petType;
 
     @Column(name = "name")
     private String name;
 
-    @Column(name = "shelter_type")
-    private boolean shelterType;
+    @ManyToOne
+    @JoinColumn(name = "shelter_id", referencedColumnName = "id")
+    private Shelter shelter;
+
+    @OneToMany(mappedBy = "pet")
+    private List<Report> reports;
 
     @Column(name = "date_of_adoption")
     private LocalDate dateOfAdoption;
 
-    public Pet() {
+    public Pet(Long id, PetType petType, String name, Shelter shelter, List<Report> reports, LocalDate dateOfAdoption) {
+        this.id = id;
+        this.petType = petType;
+        this.name = name;
+        this.shelter = shelter;
+        this.reports = reports;
+        this.dateOfAdoption = dateOfAdoption;
     }
 
-    public Pet(Long id, String name, boolean shelterType, LocalDate dateOfAdoption) {
-        this.id = id;
-        this.name = name;
-        this.shelterType = shelterType;
-        this.dateOfAdoption = dateOfAdoption;
+    public Pet() {
     }
 
     public Long getId() {
@@ -39,6 +51,14 @@ public class Pet {
         this.id = id;
     }
 
+    public PetType getPetType() {
+        return petType;
+    }
+
+    public void setPetType(PetType petType) {
+        this.petType = petType;
+    }
+
     public String getName() {
         return name;
     }
@@ -47,12 +67,20 @@ public class Pet {
         this.name = name;
     }
 
-    public boolean isShelterType() {
-        return shelterType;
+    public Shelter getShelter() {
+        return shelter;
     }
 
-    public void setShelterType(boolean shelterType) {
-        this.shelterType = shelterType;
+    public void setShelter(Shelter shelter) {
+        this.shelter = shelter;
+    }
+
+    public List<Report> getReports() {
+        return reports;
+    }
+
+    public void setReports(List<Report> reports) {
+        this.reports = reports;
     }
 
     public LocalDate getDateOfAdoption() {
@@ -67,9 +95,12 @@ public class Pet {
     public String toString() {
         return "Pet{" +
                 "id=" + id +
+                ", petType=" + petType +
                 ", name='" + name + '\'' +
-                ", shelterType=" + shelterType +
+                ", shelter=" + shelter +
+                ", reports=" + reports +
                 ", dateOfAdoption=" + dateOfAdoption +
                 '}';
     }
 }
+

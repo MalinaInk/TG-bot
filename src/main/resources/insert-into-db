@@ -1,0 +1,67 @@
+INSERT INTO shelter(
+                    shelter_type)
+VALUES ('CAT'),
+       ('DOG');
+
+INSERT INTO volunteer(
+                      chat_id, full_name, shelter_id)
+    VALUES (1234, 'Ольга Быкова',1),
+           (1235, 'Дарья Любинская', 2),
+           (1236, 'Ким Галачян', 1),
+           (1237, 'Антон Иоков', 1),
+           (1238, 'Никита Старун', 2),
+           (1239, 'Борис Белозеров', 2);
+
+INSERT INTO pet (
+                 pet_type, name, shelter_id, date_of_adoption)
+VALUES ('CAT', 'Murzik', 1, '2023-04-24'),
+       ('CAT', 'Pushistik', 1, '2023-04-12'),
+       ('CAT', 'Musia', 1, '2023-04-13'),
+       ('CAT', 'Ksusha', 1, null),
+       ('DOG', 'Pruzhinka', 2, '2023-04-15'),
+       ('DOG', 'Barbos', 2, '2023-03-28'),
+       ('DOG', 'Laki', 2, null);
+
+INSERT INTO parent(
+                   chat_id, full_name, phone_number, number_of_report_days, volunteer_id)
+    VALUES (12345, 'Денис Потехин', '+7-887-888-88-88', 1, 1),
+           (12346, 'Елена Потанина', '+7-886-888-88-88', 6, 2),
+           (12343, 'Михаил Скипский', '+7-885-888-88-88', 9, 3),
+           (12341, 'Елизавета Авдеенко', '+7-884-888-88-88', 4, 4);
+
+INSERT INTO parent_pets (parent_id, pet_id)
+VALUES (1, 1),
+       (2, 2),
+       (2, 3),
+       (3, 5),
+       (4, 6);
+
+INSERT INTO photo(path_to_photo)
+VALUES ('C/photo1'),
+       ('C/photo2'),
+       ('C/photo3'),
+       ('C/photo4'),
+       ('C/photo5'),
+       ('C/photo6'),
+       ('C/photo7'),
+       ('C/photo8');
+
+INSERT INTO report (
+                    report_date, pet_id, parent_id, pet_diet, health, changing_habits, photo_id, is_correct)
+VALUES
+    ('15-04-2023', 1, 1, 'diet1', 'health1', 'habits1', 1, true),
+    ('15-04-2023', 1, 1, 'diet2', 'health2', 'habits2', 2, true),
+    ('15-04-2023', 2, 2, 'diet3', 'health3', 'habits3', 3, true),
+    ('15-04-2023', 3, 2, 'diet4', 'health4', 'habits4', 4, true),
+    ('15-04-2023', 5, 3, 'diet5', 'health5', 'habits5', 5, true),
+    ('15-04-2023', 5, 3, 'diet6', 'health6', 'null', 6, false),
+    ('15-04-2023', 6, 4, 'diet7', 'health7', 'habits7', 7, true),
+    ('15-04-2023', 6, 4, 'diet8', 'null', 'habits8', 8, false);
+
+INSERT INTO "user"(chat_id)
+    VALUES (65432),
+           (65433),
+           (65436),
+           (65430),
+           (65438),
+           (65434);

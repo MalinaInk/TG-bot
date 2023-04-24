@@ -1,36 +1,36 @@
 package ru.skyteam.pettelegrambot.entity;
 
 import jakarta.persistence.*;
-
 import java.time.LocalDate;
 
 @Entity
 @Table(name = "report")
+
 public class Report {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
-    @Column(name = "id", nullable = false)
+    @Column(name = "id", nullable = false, unique = true)
     private Long id;
 
     @Column(name = "report_date")
     private LocalDate reportDate;
 
-    @OneToOne
-    @JoinColumn(name = "pet_id")
+    @ManyToOne
+    @JoinColumn(name = "pet_id", referencedColumnName = "id")
     private Pet pet;
 
-    @OneToOne
-    @JoinColumn(name = "pet_parent_id")
-    private PetParent petParent;
+    @ManyToOne
+    @JoinColumn(name = "parent_id", referencedColumnName = "id")
+    private Parent parent;
 
-    @Column(name = "pet_diet")
+    @Column(name = "pet_diet", columnDefinition = "TEXT")
     private String petDiet;
 
-    @Column(name = "health")
+    @Column(name = "health", columnDefinition = "TEXT")
     private String health;
 
-    @Column(name = "changing habits")
+    @Column(name = "changing_habits", columnDefinition = "TEXT")
     private String changingHabits;
 
     @OneToOne
@@ -40,20 +40,19 @@ public class Report {
     @Column(name = "is_correct")
     private Boolean isCorrect;
 
-    public Report() {
-    }
-
-    public Report(Long id, LocalDate reportDate, Pet pet, PetParent petParent, String petDiet,
-                  String health, String changingHabits, Photo photo, Boolean isCorrect) {
+    public Report(Long id, LocalDate reportDate, Pet pet, Parent parent, String petDiet, String health, String changingHabits, Photo photo, Boolean isCorrect) {
         this.id = id;
         this.reportDate = reportDate;
         this.pet = pet;
-        this.petParent = petParent;
+        this.parent = parent;
         this.petDiet = petDiet;
         this.health = health;
         this.changingHabits = changingHabits;
         this.photo = photo;
         this.isCorrect = isCorrect;
+    }
+
+    public Report() {
     }
 
     public Long getId() {
@@ -80,12 +79,12 @@ public class Report {
         this.pet = pet;
     }
 
-    public PetParent getPetParent() {
-        return petParent;
+    public Parent getParent() {
+        return parent;
     }
 
-    public void setPetParent(PetParent petParent) {
-        this.petParent = petParent;
+    public void setParent(Parent parent) {
+        this.parent = parent;
     }
 
     public String getPetDiet() {
@@ -134,7 +133,7 @@ public class Report {
                 "id=" + id +
                 ", reportDate=" + reportDate +
                 ", pet=" + pet +
-                ", petParent=" + petParent +
+                ", parent=" + parent +
                 ", petDiet='" + petDiet + '\'' +
                 ", health='" + health + '\'' +
                 ", changingHabits='" + changingHabits + '\'' +

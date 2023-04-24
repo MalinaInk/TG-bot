@@ -1,37 +1,36 @@
 package ru.skyteam.pettelegrambot.entity;
 
 import jakarta.persistence.*;
-
 import java.util.List;
 
 @Entity
+@Table(name = "shelter")
 
 public class Shelter {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 
-    @Column(name = "id", nullable = false)
+    @Column(name = "id", nullable = false, unique = true)
     private Long id;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "shelter_type")
-    private boolean shelterType;
+    private PetType shelterType;
 
-    @OneToMany
-    @JoinColumn(name = "volunteer_id")
+    @OneToMany(mappedBy = "shelter")
     private List<Volunteer> volunteers;
 
-    @OneToMany
-    @JoinColumn(name = "pet_id")
+    @OneToMany(mappedBy = "shelter")
     private List<Pet> pets;
 
-    public Shelter() {
-    }
-
-    public Shelter(Long id, boolean shelterType, List<Volunteer> volunteers, List<Pet> pets) {
+    public Shelter(Long id, PetType shelterType, List<Volunteer> volunteers, List<Pet> pets) {
         this.id = id;
         this.shelterType = shelterType;
         this.volunteers = volunteers;
         this.pets = pets;
+    }
+
+    public Shelter() {
     }
 
     public Long getId() {
@@ -42,11 +41,11 @@ public class Shelter {
         this.id = id;
     }
 
-    public boolean isShelterType() {
+    public PetType getShelterType() {
         return shelterType;
     }
 
-    public void setShelterType(boolean shelterType) {
+    public void setShelterType(PetType shelterType) {
         this.shelterType = shelterType;
     }
 
