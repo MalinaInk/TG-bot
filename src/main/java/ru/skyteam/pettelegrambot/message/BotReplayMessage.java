@@ -1,6 +1,6 @@
 package ru.skyteam.pettelegrambot.message;
 
-public class Message {
+public class BotReplayMessage {
     // Взаимодействие с пользователем. Ответы.
     //Консультация с новым пользователем
 
