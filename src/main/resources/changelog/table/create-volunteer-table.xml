@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+
+    <changeSet id="create-volunteer-table.1" author="malinaink">
+
+        <preConditions>
+            <not>
+                <tableExists tableName="volunteer"/>
+            </not>
+        </preConditions>
+
+        <createTable tableName="volunteer">
+            <column name="id" autoIncrement="true" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+
+            <column name="chat_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+
+            <column name="full_name" type="VARCHAR(32)">
+            </column>
+
+            <column name="shelter_id" type="BIGINT">
+            </column>
+
+
+        </createTable>
+
+
+        <addForeignKeyConstraint baseTableName="volunteer" baseColumnNames="shelter_id" constraintName="FK_SHELTER_ID_TO_VOLUNTEER" referencedTableName="shelter"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+
+</databaseChangeLog>
