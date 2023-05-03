@@ -54,14 +54,36 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                 switch (data){
                     case (BotMenu.INFO_CAT):
                         buttonMenu.meinMenu(chatId);
-                        sendMessage(chatId, BotReplayMessage.INFO_SHELTER_CAT);
+                        sendMessage(chatId, BotReplayMessage.INFO_SHELTER);
                         break;
                     case (BotMenu.INFO_DOG):
                         buttonMenu.meinMenu(chatId);
-                        sendMessage(chatId,BotReplayMessage.INFO_SHELTER_DOG);
+                        sendMessage(chatId,BotReplayMessage.INFO_SHELTER);
                         break;
+
                     case (BotMenu.CALL_VOLUNTEER):
                         sendMessage(chatId, BotReplayMessage.VOLUNTEER);
+                        buttonMenu.meinMenu(chatId);
+                        break;
+
+                    case (BotMenu.INFO_SHELTER):
+                        buttonMenu.adoptMenu(chatId);
+                        break;
+                    case (BotMenu.SECURITY_PASS):
+                        sendMessage(chatId, BotReplayMessage.SECURITY_PASS);
+                        buttonMenu.adoptMenu(chatId);
+                        break;
+                    case (BotMenu.SEND_CONTACTS):
+                        sendMessage(chatId,BotReplayMessage.CONTACT_INFO);
+                        buttonMenu.meinMenu(chatId);
+                        break;
+                    case (BotMenu.PRECAUTION):
+                        sendMessage(chatId, BotReplayMessage.INFO_PRECAUTION);
+                        buttonMenu.adoptMenu(chatId);
+                        break;
+                    case (BotMenu.GENERAL_INFO_SHELTER):
+                        sendMessage(chatId, BotReplayMessage.INFO_SHELTER);
+                        buttonMenu.adoptMenu(chatId);
                         break;
 
                 }
