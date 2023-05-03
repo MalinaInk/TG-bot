@@ -15,11 +15,13 @@ public class BotMenu {
 
     public static final String CALL_VOLUNTEER = "Позвать волонтера";
 
-    public static final String TO_MAIN_MENU = "В главное меню";
+    public static final String INFO_SHELTER = "Узнать информацию о приюте";
+    public static final String GENERAL_INFO_SHELTER = "Общая информация о приюте";
 
     public static final String PRECAUTION = "Техника безопасности";
 
     public static final String SEND_CONTACTS = "Оставить контакты";
+
 
     public static final String DATING_RULES = "Правила знакомства с животным";
 
