@@ -11,16 +11,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ru.skyteam.pettelegrambot.listener.TelegramBotUpdatesListener;
 
-/*@RequiredArgsConstructor*/
+@RequiredArgsConstructor
 @Service
 public class ButtonMenu {
     private final TelegramBot telegramBot;
     private final Logger logger = LoggerFactory.getLogger(TelegramBotUpdatesListener.class);
 
-    public ButtonMenu(TelegramBot telegramBot) {
-        this.telegramBot = telegramBot;
 
-    }
 
     //Меню для выбора приюта
     public void petMenu(Long chatId){
@@ -39,19 +36,50 @@ public class ButtonMenu {
         logger.info("Вызвано главное меню: {}", chatId);
         InlineKeyboardButton button1 = new InlineKeyboardButton(BotMenu.HOW_TO_ADOPT);
         InlineKeyboardButton button2 = new InlineKeyboardButton(BotMenu.CALL_VOLUNTEER);
-        InlineKeyboardButton button3 = new InlineKeyboardButton(BotMenu.REQUIRED_DOCUMENTS);
-        InlineKeyboardButton button4 = new InlineKeyboardButton(BotMenu.SECURITY_PASS);
+        InlineKeyboardButton button3 = new InlineKeyboardButton(BotMenu.SEND_REPORT);
+        InlineKeyboardButton button4 = new InlineKeyboardButton(BotMenu.INFO_SHELTER);
         button1.callbackData(BotMenu.HOW_TO_ADOPT);
         button2.callbackData(BotMenu.CALL_VOLUNTEER);
-        button3.callbackData(BotMenu.REQUIRED_DOCUMENTS);
-        button4.callbackData(BotMenu.SECURITY_PASS);
+        button3.callbackData(BotMenu.SEND_REPORT);
+        button4.callbackData(BotMenu.INFO_SHELTER);
 
         InlineKeyboardMarkup keyboardMarkup = new InlineKeyboardMarkup(button1, button2);
         keyboardMarkup.addRow(button3, button4);
 
-        sendButtonMessage(chatId, BotReplayMessage.POTENTIAL_PET_PARENT_HELLO, keyboardMarkup);
+    }
+//Меню информации о приюте
+    public void adoptMenu(Long chatId){
+        logger.info("Вызвано меню информации о приюте: {}", chatId);
+        InlineKeyboardButton button1 = new InlineKeyboardButton(BotMenu.SECURITY_PASS);
+        InlineKeyboardButton button2 = new InlineKeyboardButton(BotMenu.SEND_CONTACTS);
+        InlineKeyboardButton button3 = new InlineKeyboardButton(BotMenu.PRECAUTION);
+        InlineKeyboardButton button4 = new InlineKeyboardButton(BotMenu.GENERAL_INFO_SHELTER);
+        InlineKeyboardButton button5 = new InlineKeyboardButton(BotMenu.CALL_VOLUNTEER);
+
+        button1.callbackData(BotMenu.SECURITY_PASS);
+        button2.callbackData(BotMenu.SEND_CONTACTS);
+        button3.callbackData(BotMenu.PRECAUTION);
+        button4.callbackData(BotMenu.GENERAL_INFO_SHELTER);
+        button5.callbackData(BotMenu.CALL_VOLUNTEER);
+
+
+        InlineKeyboardMarkup keyboardMarkup = new InlineKeyboardMarkup(button1, button2);
+        keyboardMarkup.addRow(button4, button3);
+        keyboardMarkup.addRow(button5);
+
+        sendButtonMessage(chatId, BotReplayMessage.ADOPT_MENU,keyboardMarkup);
+    }
+
+    //Меню консультации
+    public void consultationMenu(Long chatId){
+        logger.info("Вызвано меню консультации с потенциальным хозяином животного из приюта");
+        InlineKeyboardButton button1 = new InlineKeyboardButton(BotMenu.DATING_RULES);
+        InlineKeyboardButton button2 = new InlineKeyboardButton(BotMenu.REQUIRED_DOCUMENTS);
+        InlineKeyboardButton button3 = new InlineKeyboardButton(BotMenu.PET_TRANSPORT);
 
     }
+
+
 //Шаблон для создания сообщений с кнопками
     private void sendButtonMessage(Long chatId, String textToSend, InlineKeyboardMarkup inlineKeyboardMarkup) {
         SendMessage message = new SendMessage(chatId, textToSend);
