@@ -14,4 +14,11 @@
     <include file="changelog/table/create-parent-table.xml"/>
     <include file="changelog/table/create-report-table.xml"/>
 
+    <include file="changelog/table/update-table/update-user-table.xml"/>
+    <include file="changelog/table/update-table/update-pet-table.xml"/>
+    <include file="changelog/table/update-table/update-parent-table.xml"/>
+    <include file="changelog/table/update-table/update-report-table.xml"/>
+    <include file="changelog/table/drop-table/drop-photo-table.xml"/>
+    <include file="changelog/table/drop-table/drop-parent-pets-table.xml"/>
+
 </databaseChangeLog>

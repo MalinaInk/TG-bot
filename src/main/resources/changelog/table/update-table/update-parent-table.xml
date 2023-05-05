@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+<!--Удаляем ключ-->
+    <!--Удаляем колонку   -->
+    <changeSet id="remove_volunteer_id_column" author="malinaink" >
+
+        <dropForeignKeyConstraint
+
+                                  baseTableName="parent"
+                                  constraintName="FK_VOLUNTEER_ID"/>
+
+        <dropColumn tableName="parent" columnName="volunteer_id"/>
+
+    </changeSet>
+</databaseChangeLog>
+
+        <!--                baseTableSchemaName="public"-->
+<!--<addForeignKeyConstraint baseTableName="parent" baseColumnNames="volunteer_id" constraintName="FK_VOLUNTEER_ID" referencedTableName="volunteer"-->
+<!--                         referencedColumnNames="id"/>-->

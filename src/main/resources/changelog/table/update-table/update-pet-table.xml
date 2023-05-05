@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="add_volunteer_to_pet" author="malinaink">
+        <preConditions onFail="WARN">
+            <not>
+                <columnExists columnName="parent_id" tableName="pet"/>
+                <foreignKeyConstraintExists foreignKeyName="FK_PET_PARENT_ID"/>
+                <columnExists columnName="volunteer_id" tableName="pet"/>
+                <foreignKeyConstraintExists foreignKeyName="FK_PET_VOLUNTEER_ID"/>
+            </not>
+        </preConditions>
+        <addColumn tableName="pet">
+            <column name="volunteer_id" type="BIGINT"/>
+        </addColumn>
+
+        <addColumn tableName="pet">
+            <column name="parent_id" type="BIGINT"/>
+        </addColumn>
+
+        <addForeignKeyConstraint
+                baseTableName="pet"
+                baseColumnNames="volunteer_id"
+                referencedTableName="volunteer"
+                referencedColumnNames="id"
+                constraintName="FK_PET_VOLUNTEER_ID"/>
+
+
+        <addForeignKeyConstraint
+                baseTableName="pet"
+                baseColumnNames="parent_id"
+                referencedTableName="parent"
+                referencedColumnNames="id"
+                constraintName="FK_PET_PARENT_ID"/>
+    </changeSet>
+</databaseChangeLog>
+
