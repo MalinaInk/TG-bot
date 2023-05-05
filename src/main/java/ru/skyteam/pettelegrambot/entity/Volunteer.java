@@ -22,17 +22,17 @@ public class Volunteer {
     private Shelter shelter;
 
     @OneToMany(mappedBy = "volunteer")
-    private List<Parent> parents;
+    private List<Pet> pets;
 
-    public Volunteer(Long id, Long chatId, String fullName, Shelter shelter, List<Parent> parents) {
+    public Volunteer() {
+    }
+
+    public Volunteer(Long id, Long chatId, String fullName, Shelter shelter, List<Pet> pets) {
         this.id = id;
         this.chatId = chatId;
         this.fullName = fullName;
         this.shelter = shelter;
-        this.parents = parents;
-    }
-
-    public Volunteer() {
+        this.pets = pets;
     }
 
     public Long getId() {
@@ -67,12 +67,12 @@ public class Volunteer {
         this.shelter = shelter;
     }
 
-    public List<Parent> getParents() {
-        return parents;
+    public List<Pet> getPets() {
+        return pets;
     }
 
-    public void setParents(List<Parent> parents) {
-        this.parents = parents;
+    public void setPets(List<Pet> pets) {
+        this.pets = pets;
     }
 
     @Override
@@ -82,7 +82,7 @@ public class Volunteer {
                 ", chatId=" + chatId +
                 ", fullName='" + fullName + '\'' +
                 ", shelter=" + shelter +
-                ", parents=" + parents +
+                ", pets=" + pets +
                 '}';
     }
 }

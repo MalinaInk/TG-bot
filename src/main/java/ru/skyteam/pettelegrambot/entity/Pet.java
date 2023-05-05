@@ -14,6 +14,14 @@ public class Pet {
     @Column(name = "id", nullable = false, unique = true)
     private Long id;
 
+    @ManyToOne
+    @JoinColumn(name = "parent_id", referencedColumnName = "id")
+    private Parent parent;
+
+    @ManyToOne
+    @JoinColumn(name = "volunteer_id", referencedColumnName = "id")
+    private Volunteer volunteer;
+
     @Enumerated(EnumType.STRING)
     @Column(name = "pet_type")
     private PetType petType;
@@ -31,16 +39,18 @@ public class Pet {
     @Column(name = "date_of_adoption")
     private LocalDate dateOfAdoption;
 
-    public Pet(Long id, PetType petType, String name, Shelter shelter, List<Report> reports, LocalDate dateOfAdoption) {
+    public Pet() {
+    }
+
+    public Pet(Long id, Parent parent, Volunteer volunteer, PetType petType, String name, Shelter shelter, List<Report> reports, LocalDate dateOfAdoption) {
         this.id = id;
+        this.parent = parent;
+        this.volunteer = volunteer;
         this.petType = petType;
         this.name = name;
         this.shelter = shelter;
         this.reports = reports;
         this.dateOfAdoption = dateOfAdoption;
-    }
-
-    public Pet() {
     }
 
     public Long getId() {
@@ -49,6 +59,22 @@ public class Pet {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Parent getParent() {
+        return parent;
+    }
+
+    public void setParent(Parent parent) {
+        this.parent = parent;
+    }
+
+    public Volunteer getVolunteer() {
+        return volunteer;
+    }
+
+    public void setVolunteer(Volunteer volunteer) {
+        this.volunteer = volunteer;
     }
 
     public PetType getPetType() {
@@ -95,6 +121,8 @@ public class Pet {
     public String toString() {
         return "Pet{" +
                 "id=" + id +
+                ", parent=" + parent +
+                ", volunteer=" + volunteer +
                 ", petType=" + petType +
                 ", name='" + name + '\'' +
                 ", shelter=" + shelter +

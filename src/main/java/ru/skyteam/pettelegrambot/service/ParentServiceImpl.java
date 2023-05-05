@@ -71,4 +71,8 @@ public class ParentServiceImpl implements ParentService{
         logger.info("method [update]");
         return parentRepository.findAll();
     }
+
+    public Parent findParentByChatId(Long chatId) {
+      return parentRepository.getParentByChatId(chatId);
+    }
 }

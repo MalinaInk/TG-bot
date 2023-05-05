@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="add_last_action_to_report" author="malinaink">
+
+        <addColumn tableName="report">
+            <column name="last_action" type="varchar(32)"/>
+        </addColumn>
+
+    </changeSet>
+
+
+    <changeSet id="remove_FK_REPORT_PHOTO_ID" author="malinaink">
+
+        <dropForeignKeyConstraint baseTableName="report"
+                                  constraintName="FK_REPORT_PHOTO_ID"/>
+    </changeSet>
+
+
+    <changeSet id="change_column_type_and_name" author="malinaink" >
+
+        <addColumn tableName="report">
+            <column name="path_to_photo" type="VARCHAR(255)"/>
+        </addColumn>
+
+        <sql>
+            UPDATE report SET path_to_photo = photo_id;
+        </sql>
+
+        <dropColumn tableName="report" columnName="photo_id"/>
+
+    </changeSet>
+
+
+</databaseChangeLog>
+
+<!--    <addForeignKeyConstraint baseTableName="report" baseColumnNames="photo_id" constraintName="FK_REPORT_PHOTO_ID" referencedTableName="photo"-->
+<!--                             referencedColumnNames="id"/>-->
+<!--        "schema_name"?-->
+
+<!--<changeSet author="author" id="changeColumnTypeAndName">-->
+<!--<addColumn tableName="table_name">-->
+<!--    <column name="new_column_name" type="new_column_type"/>-->
+<!--</addColumn>-->
+<!--<sql>-->
+<!--    UPDATE table_name SET new_column_name = old_column_name;-->
+<!--</sql>-->
+<!--<dropColumn tableName="table_name" columnName="old_column_name"/>-->
+<!--</changeSet>-->

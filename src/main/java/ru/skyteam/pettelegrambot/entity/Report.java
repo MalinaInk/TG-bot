@@ -33,14 +33,16 @@ public class Report {
     @Column(name = "changing_habits", columnDefinition = "TEXT")
     private String changingHabits;
 
-    @OneToOne
-    @JoinColumn(name = "photo_id")
-    private Photo photo;
+    @Column(name = "path_to_photo")
+    private String pathToPhoto;
 
     @Column(name = "is_correct")
     private Boolean isCorrect;
 
-    public Report(Long id, LocalDate reportDate, Pet pet, Parent parent, String petDiet, String health, String changingHabits, Photo photo, Boolean isCorrect) {
+    @Enumerated(EnumType.STRING)
+    @Column(name = "last_action")
+    private LastAction lastAction;
+    public Report(Long id, LocalDate reportDate, Pet pet, Parent parent, String petDiet, String health, String changingHabits, String pathToPhoto, Boolean isCorrect, LastAction lastAction) {
         this.id = id;
         this.reportDate = reportDate;
         this.pet = pet;
@@ -48,10 +50,10 @@ public class Report {
         this.petDiet = petDiet;
         this.health = health;
         this.changingHabits = changingHabits;
-        this.photo = photo;
+        this.pathToPhoto = pathToPhoto;
         this.isCorrect = isCorrect;
+        this.lastAction = lastAction;
     }
-
     public Report() {
     }
 
@@ -111,12 +113,12 @@ public class Report {
         this.changingHabits = changingHabits;
     }
 
-    public Photo getPhoto() {
-        return photo;
+    public String getPathToPhoto() {
+        return pathToPhoto;
     }
 
-    public void setPhoto(Photo photo) {
-        this.photo = photo;
+    public void setPathToPhoto(String pathToPhoto) {
+        this.pathToPhoto = pathToPhoto;
     }
 
     public Boolean getCorrect() {
@@ -125,6 +127,14 @@ public class Report {
 
     public void setCorrect(Boolean correct) {
         isCorrect = correct;
+    }
+
+    public LastAction getLastAction() {
+        return lastAction;
+    }
+
+    public void setLastAction(LastAction lastAction) {
+        this.lastAction = lastAction;
     }
 
     @Override
@@ -137,8 +147,9 @@ public class Report {
                 ", petDiet='" + petDiet + '\'' +
                 ", health='" + health + '\'' +
                 ", changingHabits='" + changingHabits + '\'' +
-                ", photo=" + photo +
+                ", pathToPhoto='" + pathToPhoto + '\'' +
                 ", isCorrect=" + isCorrect +
+                ", lastAction=" + lastAction +
                 '}';
     }
 }

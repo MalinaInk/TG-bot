@@ -12,10 +12,14 @@ import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ru.skyteam.pettelegrambot.exception.PhotoUploadException;
 import ru.skyteam.pettelegrambot.message.BotMenu;
 import ru.skyteam.pettelegrambot.message.BotReplayMessage;
 import ru.skyteam.pettelegrambot.message.ButtonMenu;
+import ru.skyteam.pettelegrambot.report.ReportHandler;
+import ru.skyteam.pettelegrambot.service.PetServiceImpl;
 
 import java.util.List;
 
@@ -24,10 +28,9 @@ import java.util.List;
 public class TelegramBotUpdatesListener implements UpdatesListener {
 
     private final Logger logger = LoggerFactory.getLogger(TelegramBotUpdatesListener.class);
-    private final TelegramBot telegramBot;
     private final ButtonMenu buttonMenu;
-
-
+    private final TelegramBot telegramBot;
+    private final ReportHandler reportHandler;
 
     @PostConstruct
     public void init(){
@@ -45,6 +48,8 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                 if ("/start".equals(text)){
                     buttonMenu.petMenu(chatId);
                 }
+
+
             } else if (update.callbackQuery() != null) {
                 Long chatId = update.callbackQuery().message().chat().id();
                 CallbackQuery callbackQuery = update.callbackQuery();
@@ -87,6 +92,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                         break;
 
                 }
+
 
             }
         });

@@ -13,6 +13,10 @@ public class User {
     @Column(name = "chat_id")
     private Long chatId;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "choice_of_shelter")
+    private PetType petType;
+
     public User(Long id, Long chatId) {
         this.id = id;
         this.chatId = chatId;

@@ -25,24 +25,19 @@ public class Parent {
     @Column(name = "number_of_report_days")
     private Integer numberOfReportDays;
 
-    @ManyToOne
-    @JoinColumn(name = "volunteer_id", referencedColumnName = "id")
-    private Volunteer volunteer;
-
     @OneToMany(mappedBy = "parent")
-    private List<ParentPet> parentPets;
+    private List<Pet> pets;
 
     public Parent() {
     }
 
-    public Parent(Long id, Long chatId, String fullName, String phoneNumber, Integer numberOfReportDays, Volunteer volunteer, List<ParentPet> parentPets) {
+    public Parent(Long id, Long chatId, String fullName, String phoneNumber, Integer numberOfReportDays, List<Pet> pets) {
         this.id = id;
         this.chatId = chatId;
         this.fullName = fullName;
         this.phoneNumber = phoneNumber;
         this.numberOfReportDays = numberOfReportDays;
-        this.volunteer = volunteer;
-        this.parentPets = parentPets;
+        this.pets = pets;
     }
 
     public Long getId() {
@@ -85,20 +80,12 @@ public class Parent {
         this.numberOfReportDays = numberOfReportDays;
     }
 
-    public Volunteer getVolunteer() {
-        return volunteer;
+    public List<Pet> getPets() {
+        return pets;
     }
 
-    public void setVolunteer(Volunteer volunteer) {
-        this.volunteer = volunteer;
-    }
-
-    public List<ParentPet> getParentPets() {
-        return parentPets;
-    }
-
-    public void setParentPets(List<ParentPet> parentPets) {
-        this.parentPets = parentPets;
+    public void setPets(List<Pet> pets) {
+        this.pets = pets;
     }
 
     @Override
@@ -109,8 +96,7 @@ public class Parent {
                 ", fullName='" + fullName + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", numberOfReportDays=" + numberOfReportDays +
-                ", volunteer=" + volunteer +
-                ", parentPets=" + parentPets +
+                ", pets=" + pets +
                 '}';
     }
 }
