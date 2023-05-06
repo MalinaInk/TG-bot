@@ -25,6 +25,16 @@ public class PhotoHandler {
     }
 
     //    Пользователь высылает фото
+
+    /**
+     * <b><u>Получение и обработка фото-файла от пользователя</u></b>
+     * <i>Формирование пути до файла, <br> сохранение на локальном диске</i>
+     * <br>
+     * @throws PhotoUploadException <br> если произошел сбой при загрузке фото
+     * @param message (user's update in photo-format)
+     * @return String ('path to photo' for save to DB)
+     *
+     */
     public String receivePhoto(Message message) throws PhotoUploadException {
 
         PhotoSize photoSize = message.photo()[message.photo().length - 1];

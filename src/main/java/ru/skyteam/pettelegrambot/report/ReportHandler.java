@@ -33,14 +33,39 @@ public class ReportHandler {
 
     public ReportHandler() {
     }
+
+    /**
+     * <b><u>Получение списка животных усыновителя
+     * <br>по полю</u></b> <i>"chatId"</i>
+     * <br><i>
+     * <br>Использует {@link #petService}
+     * @param chatId (user's updates to report-form)
+     * @return список питомцев (List &lt;Pet&gt;  )
+     */
     private List<Pet> getPetsOfParent(Long chatId) {
         return petService.findAllByChatId(chatId);
     }
 
+    /**
+     * <b><u>Получение последнего/текущего отчета усыновителя</u></b>
+     * <i> в отчете проставляем поля согласно статусу, <br>
+     * обрабатывая данные из соответствующих апдейтов</i>
+     * <br>Использует {@link  #reportService} и {@link #petService}
+     * <br> @see {@link #reportService reportFindLastByParent}
+     * @param chatId (user's chatId)
+     * @return Report
+     */
     public Report getReport(Long chatId) {
         return reportService.reportFindLastByParent(parentService.findParentByChatId(chatId));
     }
 
+    /**
+     * <b><u>Последовательная обработка апдейтов для заполнения отчета</u></b>
+     * <i>Устанавливаем контекст ожидания, <br>
+     * обрабатываем согласно контексту</i>
+     * @throws PhotoUploadException <br> если произошел сбой при загрузке фото
+     * @param update (user's updates to report-form)
+     */
     public void handle(Update update) throws PhotoUploadException {
 
         Long chatId = update.message().chat().id();
