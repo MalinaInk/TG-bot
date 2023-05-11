@@ -13,4 +13,6 @@ public interface PetService {
     public Pet update (Pet pet);
     public ResponseEntity<Pet> delete (long id);
     public List<Pet> readAll();
+    public List<Pet> findByParentId(Long parentId);
+    public List<Pet> findAllByChatId(Long chatId);
 }

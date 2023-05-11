@@ -53,6 +53,13 @@ public class Pet {
         this.dateOfAdoption = dateOfAdoption;
     }
 
+    public Pet(Long id, PetType petType, String name, Shelter shelter) {
+        this.id = id;
+        this.petType = petType;
+        this.name = name;
+        this.shelter = shelter;
+    }
+
     public Long getId() {
         return id;
     }

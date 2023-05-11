@@ -35,6 +35,13 @@ public class Volunteer {
         this.pets = pets;
     }
 
+    public Volunteer(Long id, Long chatId, String fullName, Shelter shelter) {
+        this.id = id;
+        this.chatId = chatId;
+        this.fullName = fullName;
+        this.shelter = shelter;
+    }
+
     public Long getId() {
         return id;
     }
