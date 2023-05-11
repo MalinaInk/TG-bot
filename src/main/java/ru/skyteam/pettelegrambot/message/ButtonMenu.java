@@ -38,13 +38,19 @@ public class ButtonMenu {
         InlineKeyboardButton button2 = new InlineKeyboardButton(BotMenu.CALL_VOLUNTEER);
         InlineKeyboardButton button3 = new InlineKeyboardButton(BotMenu.SEND_REPORT);
         InlineKeyboardButton button4 = new InlineKeyboardButton(BotMenu.INFO_SHELTER);
+        InlineKeyboardButton button5 = new InlineKeyboardButton(BotMenu.IN_PET_MENU);
         button1.callbackData(BotMenu.HOW_TO_ADOPT);
         button2.callbackData(BotMenu.CALL_VOLUNTEER);
         button3.callbackData(BotMenu.SEND_REPORT);
         button4.callbackData(BotMenu.INFO_SHELTER);
+        button5.callbackData(BotMenu.IN_PET_MENU);
+
 
         InlineKeyboardMarkup keyboardMarkup = new InlineKeyboardMarkup(button1, button2);
         keyboardMarkup.addRow(button3, button4);
+        keyboardMarkup.addRow(button5);
+
+        sendButtonMessage(chatId, BotReplayMessage.MAIN_MENU,keyboardMarkup);
 
     }
 //Меню информации о приюте
@@ -55,17 +61,19 @@ public class ButtonMenu {
         InlineKeyboardButton button3 = new InlineKeyboardButton(BotMenu.PRECAUTION);
         InlineKeyboardButton button4 = new InlineKeyboardButton(BotMenu.GENERAL_INFO_SHELTER);
         InlineKeyboardButton button5 = new InlineKeyboardButton(BotMenu.CALL_VOLUNTEER);
+        InlineKeyboardButton button6 = new InlineKeyboardButton(BotMenu.IN_MAIN_MENU);
 
         button1.callbackData(BotMenu.SECURITY_PASS);
         button2.callbackData(BotMenu.SEND_CONTACTS);
         button3.callbackData(BotMenu.PRECAUTION);
         button4.callbackData(BotMenu.GENERAL_INFO_SHELTER);
         button5.callbackData(BotMenu.CALL_VOLUNTEER);
+        button6.callbackData(BotMenu.IN_MAIN_MENU);
 
 
         InlineKeyboardMarkup keyboardMarkup = new InlineKeyboardMarkup(button1, button2);
         keyboardMarkup.addRow(button4, button3);
-        keyboardMarkup.addRow(button5);
+        keyboardMarkup.addRow(button5, button6);
 
         sendButtonMessage(chatId, BotReplayMessage.ADOPT_MENU,keyboardMarkup);
     }
