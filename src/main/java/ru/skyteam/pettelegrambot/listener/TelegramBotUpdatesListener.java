@@ -52,18 +52,17 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                 String name = update.callbackQuery().message().chat().firstName();
 
                 switch (data){
-                    case (BotMenu.INFO_CAT):
+                    case (BotMenu.INFO_CAT),
+                            (BotMenu.IN_MAIN_MENU):
                         buttonMenu.meinMenu(chatId);
-                        sendMessage(chatId, BotReplayMessage.INFO_SHELTER);
                         break;
                     case (BotMenu.INFO_DOG):
                         buttonMenu.meinMenu(chatId);
-                        sendMessage(chatId,BotReplayMessage.INFO_SHELTER);
                         break;
 
                     case (BotMenu.CALL_VOLUNTEER):
                         sendMessage(chatId, BotReplayMessage.VOLUNTEER);
-                        buttonMenu.meinMenu(chatId);
+                        buttonMenu.adoptMenu(chatId);
                         break;
 
                     case (BotMenu.INFO_SHELTER):
@@ -75,7 +74,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                         break;
                     case (BotMenu.SEND_CONTACTS):
                         sendMessage(chatId,BotReplayMessage.CONTACT_INFO);
-                        buttonMenu.meinMenu(chatId);
+                        buttonMenu.adoptMenu(chatId);
                         break;
                     case (BotMenu.PRECAUTION):
                         sendMessage(chatId, BotReplayMessage.INFO_PRECAUTION);
@@ -85,6 +84,8 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                         sendMessage(chatId, BotReplayMessage.INFO_SHELTER);
                         buttonMenu.adoptMenu(chatId);
                         break;
+                    case (BotMenu.IN_PET_MENU):
+                        buttonMenu.petMenu(chatId);
 
                 }
 
