@@ -9,4 +9,5 @@ public interface ParentService {
     public Parent update (Parent parent);
     public ResponseEntity <Parent> delete (long id);
     public List <Parent> readAll();
+    public Parent findParentByChatId(Long chatId);
 }
