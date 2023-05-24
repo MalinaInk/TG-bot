@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.skyteam.pettelegrambot.entity.Pet;
 import ru.skyteam.pettelegrambot.repository.PetRepository;
 
+import java.time.LocalDate;
 import java.util.List;
 @Service
 public class PetServiceImpl implements PetService{
@@ -49,4 +50,15 @@ public class PetServiceImpl implements PetService{
     public List<Pet> findAllByChatId(Long chatId) {
         return findByParentId(parentServiceImpl.findParentByChatId(chatId).getId());
     }
+
+
+    public List<Pet> listPetForReport(){
+        return petRepository.findAllByDateOfEndReportAfter(LocalDate.now());
+    }
+
+    public List<Pet> listPetForEndingReport() {
+        return petRepository.findAllByDateOfEndReportEquals(LocalDate.now().minusDays(1));
+    }
+
+
 }

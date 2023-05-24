@@ -1,6 +1,7 @@
 package ru.skyteam.pettelegrambot.entity;
 
 import jakarta.persistence.*;
+
 import java.time.LocalDate;
 import java.util.List;
 
@@ -39,10 +40,18 @@ public class Pet {
     @Column(name = "date_of_adoption")
     private LocalDate dateOfAdoption;
 
+    @Column(name = "date_of_end_report")
+    private LocalDate dateOfEndReport;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status_of_adoption")
+    private StatusOfAdoption statusOfAdoption;
+
     public Pet() {
     }
 
-    public Pet(Long id, Parent parent, Volunteer volunteer, PetType petType, String name, Shelter shelter, List<Report> reports, LocalDate dateOfAdoption) {
+    public Pet(Long id, Parent parent, Volunteer volunteer, PetType petType, String name, Shelter shelter, List<Report> reports,
+               LocalDate dateOfAdoption, LocalDate dateOfEndReport, StatusOfAdoption statusOfAdoption) {
         this.id = id;
         this.parent = parent;
         this.volunteer = volunteer;
@@ -51,7 +60,10 @@ public class Pet {
         this.shelter = shelter;
         this.reports = reports;
         this.dateOfAdoption = dateOfAdoption;
-    }
+        this.statusOfAdoption = StatusOfAdoption.WITHOUT_PARENT;
+        this.dateOfEndReport = dateOfEndReport;
+        }
+
 
     public Long getId() {
         return id;
@@ -117,6 +129,22 @@ public class Pet {
         this.dateOfAdoption = dateOfAdoption;
     }
 
+    public LocalDate getDateOfEndReport() {
+        return dateOfEndReport;
+    }
+
+    public void setDateOfEndReport(LocalDate dateOfEndReport) {
+        this.dateOfEndReport = dateOfEndReport;
+    }
+
+    public StatusOfAdoption getStatusOfAdoption() {
+        return statusOfAdoption;
+    }
+
+    public void setStatusOfAdoption(StatusOfAdoption statusOfAdoption) {
+        this.statusOfAdoption = statusOfAdoption;
+    }
+
     @Override
     public String toString() {
         return "Pet{" +
@@ -128,6 +156,8 @@ public class Pet {
                 ", shelter=" + shelter +
                 ", reports=" + reports +
                 ", dateOfAdoption=" + dateOfAdoption +
+                ", dateOfEndReport=" + dateOfEndReport +
+                ", statusOfAdoption=" + statusOfAdoption +
                 '}';
     }
 }

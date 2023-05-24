@@ -13,9 +13,11 @@ import java.util.List;
 @Service
 public class ReportServiceImpl implements ReportService {
     private final ReportRepository reportRepository;
+    private final PetServiceImpl petService;
 
-    public ReportServiceImpl(ReportRepository reportRepository) {
+    public ReportServiceImpl(ReportRepository reportRepository, PetServiceImpl petService) {
         this.reportRepository = reportRepository;
+        this.petService = petService;
     }
 
     @Override
@@ -57,4 +59,12 @@ public class ReportServiceImpl implements ReportService {
             .findFirst()
             .orElse(new Report());
     }
+
+    public LocalDate getLatestDateByPetId(Long id) {
+        return reportRepository.findLatestDateByPetId(id);
+    }
+
+//    public List<Report> getReportByPetId(){
+//
+//    }
 }

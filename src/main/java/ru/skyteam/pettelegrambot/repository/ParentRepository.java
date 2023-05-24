@@ -12,6 +12,11 @@ public interface ParentRepository extends JpaRepository<Parent, Long> {
 
     Parent getParentById(Long id);
 
-    List<Parent> findAllByNumberOfReportDaysAfter(Integer numberOfReportDays);
+//    List<Parent> findAllByNumberOfReportDaysAfter(Integer numberOfReportDays);
+
+
+//    Long getChatIdByParentId (Long id);
+//    Long getVolunteerIdByParentId (Long id);
+
 
 }

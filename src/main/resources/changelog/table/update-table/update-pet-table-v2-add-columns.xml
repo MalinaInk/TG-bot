@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.9.xsd">
+
+    <changeSet id="add_two_columns_to_pet" author="malinaink">
+        <preConditions onFail="WARN">
+            <not>
+                <columnExists columnName="date_of_end_report" tableName="pet"/>
+                <columnExists columnName="status_of_adoption" tableName="pet"/>
+            </not>
+        </preConditions>
+        <addColumn tableName="pet">
+            <column name="date_of_end_report" type="DATE"/>
+        </addColumn>
+
+        <addColumn tableName="pet">
+            <column name="status_of_adoption" type="varchar(32)"/>
+        </addColumn>
+
+    </changeSet>
+</databaseChangeLog>
