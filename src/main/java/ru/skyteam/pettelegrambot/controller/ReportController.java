@@ -1,36 +1,38 @@
 package ru.skyteam.pettelegrambot.controller;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.skyteam.pettelegrambot.entity.Parent;
-import ru.skyteam.pettelegrambot.repository.ParentRepository;
-import ru.skyteam.pettelegrambot.service.ParentService;
+import ru.skyteam.pettelegrambot.entity.Pet;
+import ru.skyteam.pettelegrambot.entity.Report;
+import ru.skyteam.pettelegrambot.repository.ReportRepository;
+import ru.skyteam.pettelegrambot.service.ReportService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/parent")
-public class ParentController {
-    private final ParentService parentService;
-    private final ParentRepository parentRepository;
+@RequestMapping("/report")
+public class ReportController {
+    private final ReportService reportService;
+    private final ReportRepository reportRepository;
 
-    public ParentController(ParentService parentService, ParentRepository parentRepository) {
-        this.parentService = parentService;
-        this.parentRepository = parentRepository;
+    public ReportController(ReportService reportService, ReportRepository reportRepository) {
+        this.reportService = reportService;
+        this.reportRepository = reportRepository;
     }
 
-    @Operation(summary = "Создать усыновителя",
+    @Operation(summary = "Внести отчет в базу",
             responses = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Усыновитель занесен в базу",
+                            description = "Отчет создан",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = Parent.class)
+                                    schema = @Schema(implementation = Report.class)
                             )
                     ),
                     @ApiResponse(
@@ -38,23 +40,23 @@ public class ParentController {
                             description = "Произошла ошибка",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = Parent.class)
+                                    schema = @Schema(implementation = Report.class)
                             )
                     )
             })
     @PostMapping("/create")
-    public Parent create(@RequestBody Parent parent) {
-        return parentService.create(parent);
+    public Report create(@RequestBody Report report) {
+        return reportService.create(report);
     }
 
-    @Operation(summary = "Найти усыновителя по id",
+    @Operation(summary = "Найти отчет по id",
             responses = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Усыновитель найден",
+                            description = "Отчет найден",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    array = @ArraySchema(schema = @Schema(implementation = Parent.class))
+                                    array = @ArraySchema(schema = @Schema(implementation = Report.class))
                             )
                     ),
                     @ApiResponse(
@@ -62,22 +64,22 @@ public class ParentController {
                             description = "Произошла ошибка",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = Parent.class)
+                                    schema = @Schema(implementation = Report.class)
                             )
                     )
             })
     @GetMapping("/read/{id}")
-    public Parent read (@PathVariable long id) {return parentService.read(id);}
+    public Report read(@PathVariable long id) {return reportService.read(id);}
 
     @Operation(
-            summary = "Изменить данные об усыновителе",
+            summary = "Изменить запись об отчете",
             responses = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Данные об усыновителе успешно изменены",
+                            description = "Данные об отчете изменены",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = Parent.class)
+                                    schema = @Schema(implementation = Report.class)
                             )
                     ),
                     @ApiResponse(
@@ -85,29 +87,24 @@ public class ParentController {
                             description = "Произошла ошибка",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = Parent.class)
+                                    schema = @Schema(implementation = Report.class)
                             )
                     )
             })
-    @PutMapping("/update/{id}")
-    public ResponseEntity<Parent> update(@RequestBody Parent parent) {
-        Parent parent1 = parentService.update(parent);
-        if (parent1 == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(parent1);
-
+    @PutMapping("/update")
+    public void update(@RequestBody Pet pet) {
+        reportService.update(pet);
     }
 
     @Operation(
-            summary = "Удалить данные усыновителя из базы",
+            summary = "Удалить отчет",
             responses = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Данные успешно удалены",
+                            description = "Отчет удален",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = Parent.class)
+                                    schema = @Schema(implementation = Report.class)
                             )
                     ),
                     @ApiResponse(
@@ -115,23 +112,23 @@ public class ParentController {
                             description = "Произошла ошибка",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    schema = @Schema(implementation = Parent.class)
+                                    schema = @Schema(implementation = Report.class)
                             )
                     )
             })
 
     @DeleteMapping("/delete/{id}")
-    public void delete(@PathVariable long id) {parentService.delete(id);}
+    public void delete(@PathVariable long id) {reportService.delete(id);}
 
     @Operation(
-            summary = "Получить список усыновиетелей",
+            summary = "Получить список отчетов",
             responses = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Список усыновиетелей получен",
+                            description = "Список отчетов получен",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    array = @ArraySchema(schema = @Schema(implementation = Parent.class))
+                                    array = @ArraySchema(schema = @Schema(implementation = Report.class))
                             )
                     ),
                     @ApiResponse(
@@ -139,24 +136,24 @@ public class ParentController {
                             description = "Произошла ошибка",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    array = @ArraySchema(schema = @Schema(implementation = Parent.class))
+                                    array = @ArraySchema(schema = @Schema(implementation = Report.class))
                             )
                     )
             })
-    @GetMapping("/getListParents")
-    public List<Parent> read() {
-        return parentService.readAll();
+    @GetMapping("/getListReports")
+    public List<Report> read() {
+        return reportService.readAll();
     }
 
     @Operation(
-            summary = "Найти усыновителя по ChatId",
+            summary = "Сохранить отчет",
             responses = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "Усыновитель найден",
+                            description = "Отчет сохранен",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    array = @ArraySchema(schema = @Schema(implementation = Parent.class))
+                                    array = @ArraySchema(schema = @Schema(implementation = Report.class))
                             )
                     ),
                     @ApiResponse(
@@ -164,13 +161,38 @@ public class ParentController {
                             description = "Произошла ошибка",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
-                                    array = @ArraySchema(schema = @Schema(implementation = Parent.class))
+                                    array = @ArraySchema(schema = @Schema(implementation = Report.class))
                             )
                     )
             })
+    @GetMapping("/save")
+    public void save (@PathVariable Report report) {
+        reportService.save(report);
+    }
 
-    @GetMapping("/findParentByChatId")
-    public Parent findParentByChatId(Long chatId) {
-        return parentRepository.getParentByChatId(chatId);
+    @Operation(
+            summary = "Найти последний отчет усыновителя",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200",
+                            description = "Отчет найден",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    array = @ArraySchema(schema = @Schema(implementation = Report.class))
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "500",
+                            description = "Произошла ошибка",
+                            content = @Content(
+                                    mediaType = MediaType.APPLICATION_JSON_VALUE,
+                                    array = @ArraySchema(schema = @Schema(implementation = Report.class))
+                            )
+                    )
+            })
+    @GetMapping("/reportFindLastByParent")
+    public void reportFindLastByParent(@PathVariable Parent parent ) {
+        reportService.reportFindLastByParent(parent);
     }
 }
+

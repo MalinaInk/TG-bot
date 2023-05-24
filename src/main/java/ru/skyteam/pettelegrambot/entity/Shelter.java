@@ -29,6 +29,10 @@ public class Shelter {
         this.volunteers = volunteers;
         this.pets = pets;
     }
+    public Shelter(Long id, PetType shelterType) {
+        this.id = id;
+        this.shelterType = shelterType;
+    }
 
     public Shelter() {
     }

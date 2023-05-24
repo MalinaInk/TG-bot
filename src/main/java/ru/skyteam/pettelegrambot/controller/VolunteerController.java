@@ -19,17 +19,15 @@ public class VolunteerController {
     private final VolunteerService volunteerService;
 
     VolunteerController(VolunteerService volunteerService) {
-
         this.volunteerService = volunteerService;
     }
 
-
     @Operation(
-            summary = "create volunteer",
+            summary = "Создать заптсь о новом волонтере",
             responses = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "volunteer created",
+                            description = "Волонтер создан",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
                                     schema = @Schema(implementation = Volunteer.class)
@@ -37,7 +35,7 @@ public class VolunteerController {
                     ),
                     @ApiResponse(
                             responseCode = "500",
-                            description = "incorrect param",
+                            description = "Произошла ошибка",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
                                     schema = @Schema(implementation = Volunteer.class)
@@ -49,11 +47,12 @@ public class VolunteerController {
     public Volunteer create(@RequestBody Volunteer volunteer) {
         return volunteerService.create(volunteer);
     }
+
     @Operation(
-            summary = "read volunteer by id",
+            summary = "Найти волонтера по id",
             responses = {@ApiResponse(
                     responseCode = "200",
-                    description = "volunteer found",
+                    description = "Волонтер найден",
                     content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
                             schema = @Schema(implementation = Volunteer.class)
@@ -61,7 +60,7 @@ public class VolunteerController {
             ),
                     @ApiResponse(
                             responseCode = "500",
-                            description = "incorrect param",
+                            description = "Произошла ошибка",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
                                     schema = @Schema(implementation = Volunteer.class)
@@ -75,11 +74,11 @@ public class VolunteerController {
     }
 
     @Operation(
-            summary = "update volunteer",
+            summary = "Изменить данные о волонтере",
             responses = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "volunteer updated",
+                            description = "Данные о волонтере успешно изменены",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
                                     schema = @Schema(implementation = Volunteer.class)
@@ -87,7 +86,7 @@ public class VolunteerController {
                     ),
                     @ApiResponse(
                             responseCode = "500",
-                            description = "incorrect param",
+                            description = "Произошла ошибка",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
                                     schema = @Schema(implementation = Volunteer.class)
@@ -105,11 +104,11 @@ public class VolunteerController {
     }
 
     @Operation(
-            summary = "delete volunteer",
+            summary = "Удалить волонтера из базы",
             responses = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "volunteer deleted",
+                            description = "Волонтер удален",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
                                     schema = @Schema(implementation = Volunteer.class)
@@ -117,7 +116,7 @@ public class VolunteerController {
                     ),
                     @ApiResponse(
                             responseCode = "500",
-                            description = "incorrect param",
+                            description = "Произошла ошибка",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
                                     schema = @Schema(implementation = Volunteer.class)
@@ -131,11 +130,11 @@ public class VolunteerController {
     }
 
     @Operation(
-            summary = "get list volunteers",
+            summary = "Получить список волонтеров",
             responses = {
                     @ApiResponse(
                             responseCode = "200",
-                            description = "all volunteers",
+                            description = "Список волонтеров получен",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
                                     array = @ArraySchema(schema = @Schema(implementation = Volunteer.class))
@@ -143,7 +142,7 @@ public class VolunteerController {
                     ),
                     @ApiResponse(
                             responseCode = "500",
-                            description = "incorrect param",
+                            description = "Произошла ошибка",
                             content = @Content(
                                     mediaType = MediaType.APPLICATION_JSON_VALUE,
                                     array = @ArraySchema(schema = @Schema(implementation = Volunteer.class))
