@@ -5,35 +5,19 @@ import com.pengrad.telegrambot.request.SendMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import ru.skyteam.pettelegrambot.entity.LastAction;
 import ru.skyteam.pettelegrambot.entity.Pet;
 import ru.skyteam.pettelegrambot.entity.Report;
 import ru.skyteam.pettelegrambot.entity.StatusOfAdoption;
-import ru.skyteam.pettelegrambot.repository.ParentRepository;
-import ru.skyteam.pettelegrambot.repository.ReportRepository;
 import ru.skyteam.pettelegrambot.service.PetServiceImpl;
 import ru.skyteam.pettelegrambot.service.ReportServiceImpl;
-
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
+
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
+
 
 import static ru.skyteam.pettelegrambot.message.BotReplayMessage.*;
-
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.scheduling.annotation.Scheduled;
-//import org.springframework.stereotype.Component;
-//import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-//import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-//
-//import java.time.LocalDate;
-//import java.time.LocalDateTime;
-//import java.time.LocalTime;
 
 @Component
 public class TelegramBotReminder {

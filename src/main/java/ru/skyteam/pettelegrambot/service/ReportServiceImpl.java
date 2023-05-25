@@ -7,7 +7,6 @@ import ru.skyteam.pettelegrambot.entity.Parent;
 import ru.skyteam.pettelegrambot.entity.Pet;
 import ru.skyteam.pettelegrambot.entity.Report;
 import ru.skyteam.pettelegrambot.repository.ReportRepository;
-
 import java.time.LocalDate;
 import java.util.List;
 @Service
@@ -64,7 +63,5 @@ public class ReportServiceImpl implements ReportService {
         return reportRepository.findLatestDateByPetId(id);
     }
 
-//    public List<Report> getReportByPetId(){
-//
-//    }
+
 }

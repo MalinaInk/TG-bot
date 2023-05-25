@@ -1,11 +1,7 @@
 package ru.skyteam.pettelegrambot.service;
 
 import org.springframework.http.ResponseEntity;
-import ru.skyteam.pettelegrambot.entity.Parent;
 import ru.skyteam.pettelegrambot.entity.Pet;
-import ru.skyteam.pettelegrambot.repository.PetRepository;
-import ru.skyteam.pettelegrambot.repository.ReportRepository;
-
 import java.util.List;
 
 public interface PetService {
