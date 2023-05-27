@@ -3,7 +3,6 @@ package ru.skyteam.pettelegrambot.message;
 
 public class BotMenu {
 
-    public static final String START = "/start";
 
     public static final String INFO_CAT = " Приют для кошек";
 
@@ -12,6 +11,10 @@ public class BotMenu {
     public static final String HOW_TO_ADOPT = "Как взять животное из приюта";
 
     public static final String SECURITY_PASS = "Оформить пропуск";
+
+    public static final String IN_MAIN_MENU = "Выйти в основное меню";
+
+    public static final String IN_PET_MENU = "Выйти в меню выбора питомца";
 
     public static final String CALL_VOLUNTEER = "Позвать волонтера";
 
