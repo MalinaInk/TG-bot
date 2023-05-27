@@ -4,7 +4,6 @@ import org.springframework.http.ResponseEntity;
 import ru.skyteam.pettelegrambot.entity.Parent;
 import ru.skyteam.pettelegrambot.entity.Pet;
 import ru.skyteam.pettelegrambot.entity.Report;
-
 import java.util.List;
 
 public interface ReportService {

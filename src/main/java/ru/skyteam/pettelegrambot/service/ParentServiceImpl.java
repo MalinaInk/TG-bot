@@ -75,4 +75,6 @@ public class ParentServiceImpl implements ParentService{
     public Parent findParentByChatId(Long chatId) {
       return parentRepository.getParentByChatId(chatId);
     }
+
+
 }

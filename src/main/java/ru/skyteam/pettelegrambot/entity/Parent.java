@@ -22,21 +22,17 @@ public class Parent {
     @Column(name = "phone_number")
     private String phoneNumber;
 
-    @Column(name = "number_of_report_days")
-    private Integer numberOfReportDays;
-
     @OneToMany(mappedBy = "parent")
     private List<Pet> pets;
 
     public Parent() {
     }
 
-    public Parent(Long id, Long chatId, String fullName, String phoneNumber, Integer numberOfReportDays, List<Pet> pets) {
+    public Parent(Long id, Long chatId, String fullName, String phoneNumber, List<Pet> pets) {
         this.id = id;
         this.chatId = chatId;
         this.fullName = fullName;
         this.phoneNumber = phoneNumber;
-        this.numberOfReportDays = numberOfReportDays;
         this.pets = pets;
     }
 
@@ -72,14 +68,6 @@ public class Parent {
         this.phoneNumber = phoneNumber;
     }
 
-    public Integer getNumberOfReportDays() {
-        return numberOfReportDays;
-    }
-
-    public void setNumberOfReportDays(Integer numberOfReportDays) {
-        this.numberOfReportDays = numberOfReportDays;
-    }
-
     public List<Pet> getPets() {
         return pets;
     }
@@ -95,7 +83,6 @@ public class Parent {
                 ", chatId=" + chatId +
                 ", fullName='" + fullName + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
-                ", numberOfReportDays=" + numberOfReportDays +
                 ", pets=" + pets +
                 '}';
     }

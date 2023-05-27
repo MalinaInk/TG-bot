@@ -21,4 +21,7 @@
     <include file="changelog/table/drop-table/drop-photo-table.xml"/>
     <include file="changelog/table/drop-table/drop-parent-pets-table.xml"/>
 
+    <include file="changelog/table/update-table/update-parent-table-v2-remove-column.xml"/>
+    <include file="changelog/table/update-table/update-pet-table-v2-add-columns.xml"/>
+
 </databaseChangeLog>

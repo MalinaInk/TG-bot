@@ -38,16 +38,3 @@
 
 </databaseChangeLog>
 
-<!--    <addForeignKeyConstraint baseTableName="report" baseColumnNames="photo_id" constraintName="FK_REPORT_PHOTO_ID" referencedTableName="photo"-->
-<!--                             referencedColumnNames="id"/>-->
-<!--        "schema_name"?-->
-
-<!--<changeSet author="author" id="changeColumnTypeAndName">-->
-<!--<addColumn tableName="table_name">-->
-<!--    <column name="new_column_name" type="new_column_type"/>-->
-<!--</addColumn>-->
-<!--<sql>-->
-<!--    UPDATE table_name SET new_column_name = old_column_name;-->
-<!--</sql>-->
-<!--<dropColumn tableName="table_name" columnName="old_column_name"/>-->
-<!--</changeSet>-->

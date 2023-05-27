@@ -13,21 +13,23 @@ VALUES (1234, 'Ольга Быкова',1),
        (1239, 'Борис Белозеров', 2);
 
 INSERT INTO parent(
-    chat_id, full_name, phone_number, number_of_report_days)
-VALUES (12345, 'Денис Потехин', '+7-887-888-88-88', 1),
-       (12346, 'Елена Потанина', '+7-886-888-88-88', 6),
-       (12343, 'Михаил Скипский', '+7-885-888-88-88', 9),
-       (12341, 'Елизавета Авдеенко', '+7-884-888-88-88', 4);
+    chat_id, full_name, phone_number)
+VALUES (12345, 'Денис Потехин', '+7-887-888-88-88'),
+       (12346, 'Елена Потанина', '+7-886-888-88-88'),
+       (12343, 'Михаил Скипский', '+7-885-888-88-88'),
+       (12341, 'Елизавета Авдеенко', '+7-884-888-88-88');
 
+# ALTER SEQUENCE pet_id_seq RESTART WITH 1;
+# ALTER SEQUENCE report_id_seq RESTART WITH 1;
 INSERT INTO pet (
-    pet_type, name, shelter_id, date_of_adoption, volunteer_id, parent_id)
-VALUES ('CAT', 'Murzik', 1, '2023-04-24', 1, 1),
-       ('CAT', 'Pushistik', 1, '2023-04-12', 1, 2),
-       ('CAT', 'Musia', 1, '2023-04-13', 3, null),
-       ('CAT', 'Ksusha', 1, null, 4, 2),
-       ('DOG', 'Pruzhinka', 2, '2023-04-15', 2, 3),
-       ('DOG', 'Barbos', 2, '2023-03-28', 5, 4),
-       ('DOG', 'Laki', 2, null, 6, null);
+    pet_type, name, shelter_id, date_of_adoption, volunteer_id, parent_id, date_of_end_report, status_of_adoption)
+VALUES ('CAT', 'Murzik', 1, '2023-04-24', 1, 1, '2023-05-24', 'IN_PROCESS'),
+       ('CAT', 'Pushistik', 1, '2023-04-12', 1, 2, '2023-05-12', 'IN_PROCESS'),
+       ('CAT', 'Musia', 1, '2023-04-13', 3, null, '2023-05-13', 'IN_PROCESS'),
+       ('CAT', 'Ksusha', 1, null, 4, 2, null, 'WITHOUT_PARENT'),
+       ('DOG', 'Pruzhinka', 2, '2023-04-15', 2, 3, '2023-05-15', 'IN_PROCESS'),
+       ('DOG', 'Barbos', 2, '2023-03-28', 5, 4, '2023-04-28', 'IN_PROCESS'),
+       ('DOG', 'Laki', 2, null, 6, null, '2023-04-24', 'IN_PROCESS');
 
 
 INSERT INTO report (
