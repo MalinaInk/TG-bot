@@ -10,4 +10,5 @@ public interface ParentService {
     public ResponseEntity <Parent> delete (long id);
     public List <Parent> readAll();
     public Parent findParentByChatId(Long chatId);
+    public Parent save(Parent parent);
 }

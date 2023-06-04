@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.skyteam.pettelegrambot.entity.Parent;
+import ru.skyteam.pettelegrambot.entity.Report;
 import ru.skyteam.pettelegrambot.repository.ParentRepository;
 import java.util.List;
 
@@ -74,6 +75,9 @@ public class ParentServiceImpl implements ParentService{
 
     public Parent findParentByChatId(Long chatId) {
       return parentRepository.getParentByChatId(chatId);
+    }
+    public Parent save(Parent parent) {
+        return parentRepository.save(parent);
     }
 
 
