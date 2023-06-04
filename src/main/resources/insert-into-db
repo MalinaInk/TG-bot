@@ -44,10 +44,10 @@ VALUES
     ('15-04-2023', 6, 4, 'diet7', 'health7', 'habits7', true, 'DONE', 'path7'),
     ('15-04-2023', 6, 4, 'diet8', 'null', 'habits8', false, 'DONE', 'path8');
 
-INSERT INTO "user"(chat_id, choice_of_shelter)
-VALUES (65432, 'DOG'),
-       (65433,'CAT'),
-       (65436, 'DOG'),
-       (65430, 'DOG'),
-       (65438,'CAT'),
-       (65434,'CAT');
+INSERT INTO "user"(chat_id, choice_of_shelter, last_action)
+VALUES (65432, 'DOG', 'START_CONTACT'),
+       (65433,'CAT', 'START_CONTACT'),
+       (65436, 'DOG', 'WAITING_USER_FULL_NAME'),
+       (65430, 'DOG', 'START_CONTACT'),
+       (65438,'CAT', 'START_CONTACT'),
+       (65434,'CAT', 'WAITING_USER_PHONE');

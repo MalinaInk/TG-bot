@@ -1,6 +1,11 @@
 package ru.skyteam.pettelegrambot.entity;
 
 public enum LastAction {
+
+    START_CONTACT,
+    WAITING_USER_FULL_NAME,
+    WAITING_USER_PHONE,
+    DONE_CONTACT,
     START_REPORT,
     WAITING_PET_NAME,
     WAITING_PHOTO,

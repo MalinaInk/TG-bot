@@ -17,9 +17,20 @@ public class User {
     @Column(name = "choice_of_shelter")
     private PetType petType;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "last_action")
+    private LastAction lastAction;
+
     public User(Long id, Long chatId) {
         this.id = id;
         this.chatId = chatId;
+    }
+
+    public User(Long id, Long chatId, PetType petType, LastAction lastAction) {
+        this.id = id;
+        this.chatId = chatId;
+        this.petType = petType;
+        this.lastAction = lastAction;
     }
 
     public User() {
@@ -41,11 +52,29 @@ public class User {
         this.chatId = chatId;
     }
 
+    public PetType getPetType() {
+        return petType;
+    }
+
+    public void setPetType(PetType petType) {
+        this.petType = petType;
+    }
+
+    public LastAction getLastAction() {
+        return lastAction;
+    }
+
+    public void setLastAction(LastAction lastAction) {
+        this.lastAction = lastAction;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
                 ", chatId=" + chatId +
+                ", petType=" + petType +
+                ", lastAction=" + lastAction +
                 '}';
     }
 }

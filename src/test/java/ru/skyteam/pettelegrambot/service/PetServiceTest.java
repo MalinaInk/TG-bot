@@ -8,11 +8,14 @@ import ru.skyteam.pettelegrambot.entity.Pet;
 import ru.skyteam.pettelegrambot.entity.PetType;
 import ru.skyteam.pettelegrambot.entity.Shelter;
 import ru.skyteam.pettelegrambot.repository.PetRepository;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -59,7 +62,7 @@ public class PetServiceTest {
     }
 
     @Test
-    public void getAllTest() {
+    public void readAllTest() {
         List<Pet> arr = new ArrayList<Pet>(3);
         Pet pet1 = new Pet(12L, PetType.CAT, "Мурзик", shelterCat);
         Pet pet2 = new Pet(44L, PetType.DOG, "Джек", shelterDog);
@@ -70,5 +73,32 @@ public class PetServiceTest {
         when(petRepository.findAll()).thenReturn(arr);
         assertThat(arr).isEqualTo(petServiceImpl.readAll());
         assertThat(petServiceImpl.readAll()).isNotNull();
+    }
+
+    @Test
+    void testListPetForReport() {
+        Pet pet1 = new Pet();
+        pet1.setDateOfEndReport(LocalDate.now().plusDays(1));
+        Pet pet2 = new Pet();
+        pet2.setDateOfEndReport(LocalDate.now().plusDays(2));
+        Pet pet3 = new Pet();
+        pet3.setDateOfEndReport(LocalDate.now().minusDays(1));
+        when(petRepository.findAllByDateOfEndReportAfter(LocalDate.now()))
+                .thenReturn(Arrays.asList(pet1, pet2));
+        List<Pet> result = petServiceImpl.listPetForReport();
+        assertThat(result).contains(pet1, pet2).doesNotContain(pet3);
+    }
+    @Test
+    void testListPetForEndingReport() {
+        Pet pet1 = new Pet();
+        pet1.setDateOfEndReport(LocalDate.now().minusDays(1));
+        Pet pet2 = new Pet();
+        pet2.setDateOfEndReport(LocalDate.now().minusDays(1));
+        Pet pet3 = new Pet();
+        pet3.setDateOfEndReport(LocalDate.now());
+        when(petRepository.findAllByDateOfEndReportEquals(LocalDate.now().minusDays(1)))
+                .thenReturn(Arrays.asList(pet1, pet2));
+        List<Pet> result = petServiceImpl.listPetForEndingReport();
+        assertThat(result).contains(pet1, pet2).doesNotContain(pet3);
     }
 }

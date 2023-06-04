@@ -11,6 +11,7 @@ import ru.skyteam.pettelegrambot.repository.ParentRepository;
 import java.util.ArrayList;
 import java.util.List;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
 
 
@@ -35,7 +36,7 @@ public class ParentServiceTest {
         Pet pet2 = new Pet(28L, PetType.DOG, "Шарик", shelterDog);
         pets.add(pet1);
         pets.add(pet2);
-        Parent parent1 = new Parent(1L, 325L, "Грибоедова Анастасия", "8-888-8888",3, pets);
+        Parent parent1 = new Parent(1L, 325L, "Грибоедова Анастасия", "8-888-8888", pets);
         Mockito.when(parentRepository.save(parent1)).thenReturn(parent1);
         assertThat(parent1).isEqualTo(parentServiceImpl.create(parent1));
         assertThat(parentServiceImpl.create(parent1)).isNotNull();
@@ -46,7 +47,7 @@ public class ParentServiceTest {
         List<Pet> pets2 = new ArrayList<Pet>(1);
         Pet pet1 = new Pet(44L, PetType.DOG, "Джек", shelterDog);
         pets2.add(pet1);
-        Parent parent1 = new Parent(2L, 2365L, "Иванов Фёдор", "9-999-9999", 2, pets2);
+        Parent parent1 = new Parent(2L, 2365L, "Иванов Фёдор", "9-999-9999", pets2);
         Mockito.when(parentRepository.getParentById(1L)).thenReturn(parent1);
         assertThat(parent1).isEqualTo(parentServiceImpl.read(1L));
         assertThat(parentServiceImpl.read(1L)).isNotNull();
@@ -57,7 +58,7 @@ public class ParentServiceTest {
         List<Pet> pets2 = new ArrayList<Pet>(1);
         Pet pet1 = new Pet(44L, PetType.DOG, "Джек", shelterDog);
         pets2.add(pet1);
-        Parent parent1 = new Parent(2L, 2365L, "Иванов Фёдор", "7-777-7777", 3, pets2);
+        Parent parent1 = new Parent(2L, 2365L, "Иванов Фёдор", "7-777-7777", pets2);
         Mockito.when(parentRepository.save(parent1)).thenReturn(parent1);
         assertThat(parent1).isEqualTo(parentServiceImpl.update(parent1));
         assertThat(parentServiceImpl.update(parent1)).isNotNull();
@@ -72,12 +73,33 @@ public class ParentServiceTest {
     @Test
     public void readAllTest() {
         List<Parent> parents = new ArrayList<Parent>(2);
-        Parent parent1 = new Parent(1L, 325L, "Грибоедова Анастасия", "8-888-8888",3, pets);
-        Parent parent2 = new Parent(2L, 2365L, "Иванов Фёдор", "7-777-7777", 3, pets2);
+        Parent parent1 = new Parent(1L, 325L, "Грибоедова Анастасия", "8-888-8888", pets);
+        Parent parent2 = new Parent(2L, 2365L, "Иванов Фёдор", "7-777-7777", pets2);
         parents.add(parent1);
         parents.add(parent2);
         Mockito.when(parentRepository.findAll()).thenReturn(parents);
         assertThat(parents).isEqualTo(parentServiceImpl.readAll());
         assertThat(parentServiceImpl.readAll()).isNotNull();
+    }
+    @Test
+    public void testFindParentByChatId() {
+        Long chatId = 12349L;
+        Parent parent = new Parent();
+        parent.setId(1L);
+        parent.setChatId(chatId);
+        Mockito.when(parentRepository.getParentByChatId(chatId)).thenReturn(parent);
+        Parent result = parentServiceImpl.findParentByChatId(chatId);
+        assertEquals(parent, result);
+    }
+
+    @Test
+    public void testSave() {
+        Parent parent = new Parent();
+        parent.setFullName("Антон Денисов");
+        parent.setPhoneNumber("+76543212255");
+        Mockito.when(parentRepository.save(parent)).thenReturn(parent);
+        Parent savedParent = parentServiceImpl.save(parent);
+        Mockito.verify(parentRepository, Mockito.times(1)).save(parent);
+        assertEquals(parent, savedParent);
     }
 }

@@ -19,6 +19,7 @@ import ru.skyteam.pettelegrambot.message.BotMenu;
 import ru.skyteam.pettelegrambot.message.BotReplayMessage;
 import ru.skyteam.pettelegrambot.message.ButtonMenu;
 import ru.skyteam.pettelegrambot.report.ReportHandler;
+import ru.skyteam.pettelegrambot.sendContact.SendContactHandler;
 import ru.skyteam.pettelegrambot.service.PetServiceImpl;
 
 import java.util.List;
@@ -31,6 +32,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     private final ButtonMenu buttonMenu;
     private final TelegramBot telegramBot;
     private final ReportHandler reportHandler;
+    private final SendContactHandler sendContactHandler;
 
     @PostConstruct
     public void init(){
