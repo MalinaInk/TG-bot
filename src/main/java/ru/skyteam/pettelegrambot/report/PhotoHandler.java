@@ -5,18 +5,17 @@ import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.PhotoSize;
 import com.pengrad.telegrambot.request.GetFile;
 import com.pengrad.telegrambot.response.GetFileResponse;
+import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import ru.skyteam.pettelegrambot.exception.PhotoUploadException;
-
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.UUID;
 
+@Component
 public class PhotoHandler {
-    //} else if (message.photo() != null){
-//    private static TelegramBotUpdatesListener telegramBotUpdatesListener;
 
     private TelegramBot telegramBot;
 

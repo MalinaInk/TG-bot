@@ -1,13 +1,18 @@
 package ru.skyteam.pettelegrambot.service;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import ru.skyteam.pettelegrambot.entity.*;
+import ru.skyteam.pettelegrambot.entity.LastAction;
+import ru.skyteam.pettelegrambot.entity.PetType;
+import ru.skyteam.pettelegrambot.entity.User;
 import ru.skyteam.pettelegrambot.repository.UserRepository;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;

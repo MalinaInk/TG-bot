@@ -1,4 +1,5 @@
 package ru.skyteam.pettelegrambot.service;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 import ru.skyteam.pettelegrambot.entity.LastAction;
 import ru.skyteam.pettelegrambot.entity.User;
 import ru.skyteam.pettelegrambot.repository.UserRepository;
+
 import java.util.List;
 
 @Service

@@ -31,6 +31,9 @@ public class ReportHandler {
     @Autowired
     ParentServiceImpl parentService;
 
+    @Autowired
+    PhotoHandler photoHandler;
+
     public ReportHandler() {
     }
 
@@ -71,7 +74,7 @@ public class ReportHandler {
         Long chatId = update.message().chat().id();
 
         Report report = getReport(chatId);
-        if (report.getLastAction() == null) {
+        if (report.getLastAction() == null || report.getLastAction() == LastAction.DONE) {
             report.setLastAction(LastAction.START_REPORT);
         }
         switch (report.getLastAction()) {
@@ -80,7 +83,7 @@ public class ReportHandler {
                 if (pets == null || pets.isEmpty()) {
                     sendMessage(chatId,
                             """
-                                    Мы не смогли найти вашего питомца                       
+                                    Мы не смогли найти вашего питомца
                                     """
                     );
                     break;
@@ -127,7 +130,7 @@ public class ReportHandler {
             }
 
             case WAITING_PHOTO: {
-                PhotoHandler photoHandler = new PhotoHandler(telegramBot);
+//                PhotoHandler photoHandler = new PhotoHandler(telegramBot);
                 String path = photoHandler.receivePhoto(update.message());
                 if (path == null) {
                     sendMessage(chatId, "Что-то пошло не так. Пришлите фото питомца");
@@ -179,6 +182,4 @@ public class ReportHandler {
             logger.error("Ошибка отправки сообщения от бота: {}", response.description());
         }
     }
-
-
 }

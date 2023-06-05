@@ -10,12 +10,11 @@ import ru.skyteam.pettelegrambot.entity.Report;
 import ru.skyteam.pettelegrambot.entity.StatusOfAdoption;
 import ru.skyteam.pettelegrambot.service.PetServiceImpl;
 import ru.skyteam.pettelegrambot.service.ReportServiceImpl;
+
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-
 import java.util.List;
 import java.util.stream.Collectors;
-
 
 import static ru.skyteam.pettelegrambot.message.BotReplayMessage.*;
 
@@ -31,6 +30,7 @@ public class TelegramBotReminder {
     @Autowired
     ReportServiceImpl reportService;
 
+
     /**
      * <b><u> Получение списка chatId усыновителей для рассылки напоминаний</u></b>
      * <br>по списку животных <i>на испытательном сроке усыновления</i>
@@ -40,7 +40,9 @@ public class TelegramBotReminder {
      */
 
     public List<Long> getListOfParentsChatIdForReminding(List<Pet> pets) {
-        return pets.stream().map(pet -> pet.getParent().getChatId())
+        return pets.stream()
+                .filter(p -> p.getParent() != null)
+                .map(pet -> pet.getParent().getChatId())
                 .distinct()
                 .collect(Collectors.toList());
     }
@@ -107,7 +109,7 @@ public class TelegramBotReminder {
             int n = getQuantityBadReports(LocalDate.now().minusDays(3), LocalDate.now().minusDays(1), pet);
             if (n > 2 && (pet.getDateOfAdoption().isBefore(LocalDate.now().minusDays(3)))) {
                 SendMessage message = new SendMessage(pet.getVolunteer().getId(),
-                        "Усыновитель " + pet.getParent().getFullName() + " имя не присылал отчета уже 2 дня. " +
+                        "Усыновитель " + pet.getParent().getFullName() + " не присылал отчета уже 2 дня. " +
                                 "Свяжитесь с ним по номеру " + pet.getParent().getPhoneNumber());
                 try {
                     telegramBot.execute(message);
@@ -132,11 +134,11 @@ public class TelegramBotReminder {
     public int getQuantityBadReports(LocalDate startPeriod, LocalDate endPeriod, Pet pet) {
 
         List<Report> reports = pet.getReports().stream()
-                .filter(r -> r.getReportDate().isAfter(startPeriod) && r.getReportDate().isBefore(endPeriod))
+                .filter(r -> r.getReportDate().isAfter(startPeriod.minusDays(1)) && r.getReportDate().isBefore(endPeriod.plusDays(1)))
                 .toList();
         int quantityBadReports = 0;
 
-        quantityBadReports = (int) (ChronoUnit.DAYS.between(startPeriod, endPeriod)) - reports.size();
+        quantityBadReports = (int) (ChronoUnit.DAYS.between(startPeriod, endPeriod.plusDays(1))) - reports.size();
 
         quantityBadReports += (int) (reports.stream()
                 .filter(r -> !r.getCorrect()).count());
@@ -153,16 +155,16 @@ public class TelegramBotReminder {
      */
     public LocalDate getActualStartPeriod(Pet pet) {
         LocalDate actualStartPeriod = pet.getDateOfEndReport().minusDays(30);
-        long allAdoptionDays = ChronoUnit.DAYS.between(pet.getDateOfAdoption(), pet.getDateOfEndReport());
+        long allAdoptionDays = ChronoUnit.DAYS.between(pet.getDateOfAdoption(), pet.getDateOfEndReport().plusDays(1));
         if (allAdoptionDays > 30 && allAdoptionDays < 45) {
-            actualStartPeriod = pet.getDateOfEndReport().minusDays(15);
+            actualStartPeriod = pet.getDateOfEndReport().minusDays(13);
         }
         return actualStartPeriod;
     }
 
     /**
      * <b><u>Рассылка для проверки волонтером статистики и результата испытательного срока.</u></b>
-     * <br>Присвоение животному соответствующего статуса.
+     * <br>Присвоение питомцу соответствующего статуса.
      * <br>использует {@link #petService} и его метод {@link PetServiceImpl#listPetForEndingReport()}
      */
     @Scheduled(cron = "0 30 20 * * *") /*проверка волонтером статистики и результата испытательного срока*/
@@ -176,32 +178,34 @@ public class TelegramBotReminder {
                     message = new SendMessage(pet.getVolunteer().getId(),
                             "Усыновитель " + pet.getParent().getFullName()
                                     + "допустил более 3-х некорректных отчетов за тестовый период. "
-                                    + "\nАвтоматически животному будет присвоен статус WILL_BE_RETURN (нужно вернуть), "
-                                    + "\nа усыновителю отправлено сообщение о необходимости возврата животного. "
+                                    + "\nАвтоматически питомцу будет присвоен статус WILL_BE_RETURN (нужно вернуть), "
+                                    + "\nа усыновителю отправлено сообщение о необходимости возврата питомца. "
                                     + "\nПри необходимости вы можете поменять статус, а также связаться с усыновителем по номеру: "
                                     + pet.getParent().getPhoneNumber());
                     pet.setStatusOfAdoption(StatusOfAdoption.WILL_BE_RETURN);
+                    petService.update(pet);
                 } else if (badReports <= 1) {
                     message = new SendMessage(pet.getVolunteer().getId(),
                             "Усыновитель " + pet.getParent().getFullName()
                                     + "допустил не более 1-го некорректного отчета за тестовый период. "
-                                    + "\nАвтоматически животному будет присвоен статус IN_HOME (усыновлен), "
+                                    + "\nАвтоматически питомцу будет присвоен статус IN_HOME (усыновлен), "
                                     + "\nа усыновителю отправлено поздравление с усыновлением питомца. "
                                     + "\nПри необходимости вы можете поменять статус, а также связаться с усыновителем по номеру: "
                                     + pet.getParent().getPhoneNumber());
                     pet.setStatusOfAdoption(StatusOfAdoption.IN_HOME);
-
+                    petService.update(pet);
                 } else {
                     message = new SendMessage(pet.getVolunteer().getId(),
                             "Усыновитель " + pet.getParent().getFullName()
                                     + "допустил 2-3 некорректных отчета за тестовый период. "
-                                    + "\nАвтоматически животному будет подтвержден статус IN_PROCESS, "
+                                    + "\nАвтоматически питомцу будет подтвержден статус IN_PROCESS, "
                                     + "\nа усыновителю продлен испытательный срок на 14 дней и отправлено соответствующее уведомление. "
                                     + "\nПри необходимости вы можете увеличить испытательный срок на 30 дней или отказать в усыновлении, если имеются объективные причины. "
                                     + "\nСвязаться с усыновителем можно по номеру: "
                                     + pet.getParent().getPhoneNumber());
                     pet.setStatusOfAdoption(StatusOfAdoption.IN_PROCESS);
                     pet.setDateOfEndReport(pet.getDateOfEndReport().plusDays(14));
+                    petService.update(pet);
                 }
                 try {
                     telegramBot.execute(message);
@@ -214,7 +218,7 @@ public class TelegramBotReminder {
 
     /**
      * <b><u>Рассылка усыновителям о результате тестового периода усыновления</u></b>
-     * <br>в соответствии с присвоенным животному статусом.
+     * <br>в соответствии с присвоенным питомцу статусом.
      * <br>использует {@link #petService} и его метод {@link PetServiceImpl#listPetForEndingReport()}
      */
 
@@ -229,11 +233,11 @@ public class TelegramBotReminder {
                     message = new SendMessage(pet.getParent().getId(), PET_RETURN);
 
                 } else if (pet.getStatusOfAdoption() == StatusOfAdoption.IN_PROCESS
-                        && pet.getDateOfEndReport() == LocalDate.now().plusDays(14)) {
+                        && pet.getDateOfEndReport().equals(LocalDate.now().plusDays(14))) {
                     message = new SendMessage(pet.getParent().getId(), ADDITIONAL_TIME_14);
 
                 } else if (pet.getStatusOfAdoption() == StatusOfAdoption.IN_PROCESS
-                        && pet.getDateOfEndReport() == LocalDate.now().plusDays(30)) {
+                        && pet.getDateOfEndReport().equals(LocalDate.now().plusDays(30))) {
                     message = new SendMessage(pet.getParent().getId(), ADDITIONAL_TIME_30);
 
                 } else {
@@ -247,6 +251,7 @@ public class TelegramBotReminder {
             }
 
         }
+
     }
 }
 

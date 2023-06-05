@@ -6,10 +6,15 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import ru.skyteam.pettelegrambot.entity.*;
+import ru.skyteam.pettelegrambot.entity.Parent;
+import ru.skyteam.pettelegrambot.entity.Pet;
+import ru.skyteam.pettelegrambot.entity.PetType;
+import ru.skyteam.pettelegrambot.entity.Shelter;
 import ru.skyteam.pettelegrambot.repository.ParentRepository;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;

@@ -1,6 +1,7 @@
 package ru.skyteam.pettelegrambot.entity;
 
 import jakarta.persistence.*;
+
 import java.time.LocalDate;
 
 @Entity

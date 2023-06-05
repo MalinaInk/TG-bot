@@ -4,17 +4,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import ru.skyteam.pettelegrambot.entity.Pet;
 import ru.skyteam.pettelegrambot.repository.PetRepository;
+
 import java.time.LocalDate;
 import java.util.List;
 @Service
 public class PetServiceImpl implements PetService{
-    private final ParentServiceImpl parentServiceImpl;
-    private final PetRepository petRepository;
+    private  ParentServiceImpl parentServiceImpl;
+    private  PetRepository petRepository;
 
-    public PetServiceImpl(ParentServiceImpl parentServiceImpl, PetRepository petRepository) {
-        this.parentServiceImpl = parentServiceImpl;
-        this.petRepository = petRepository;
-    }
+//    public PetServiceImpl() {
+//        this.parentServiceImpl = parentServiceImpl;
+//        this.petRepository = petRepository;
+//    }
 
     @Override
     public Pet create(Pet pet) {

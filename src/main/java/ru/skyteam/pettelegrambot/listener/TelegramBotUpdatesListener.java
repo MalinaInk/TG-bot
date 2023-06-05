@@ -7,20 +7,16 @@ import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.response.SendResponse;
-//import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ru.skyteam.pettelegrambot.exception.PhotoUploadException;
 import ru.skyteam.pettelegrambot.message.BotMenu;
 import ru.skyteam.pettelegrambot.message.BotReplayMessage;
 import ru.skyteam.pettelegrambot.message.ButtonMenu;
 import ru.skyteam.pettelegrambot.report.ReportHandler;
 import ru.skyteam.pettelegrambot.sendContact.SendContactHandler;
-import ru.skyteam.pettelegrambot.service.PetServiceImpl;
 
 import java.util.List;
 

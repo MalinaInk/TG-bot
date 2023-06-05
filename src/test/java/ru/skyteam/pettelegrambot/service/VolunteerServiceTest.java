@@ -1,4 +1,5 @@
 package ru.skyteam.pettelegrambot.service;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -9,8 +10,10 @@ import ru.skyteam.pettelegrambot.entity.PetType;
 import ru.skyteam.pettelegrambot.entity.Shelter;
 import ru.skyteam.pettelegrambot.entity.Volunteer;
 import ru.skyteam.pettelegrambot.repository.VolunteerRepository;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.verify;
 

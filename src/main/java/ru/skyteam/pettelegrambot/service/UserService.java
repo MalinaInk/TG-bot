@@ -2,7 +2,6 @@ package ru.skyteam.pettelegrambot.service;
 
 import org.springframework.http.ResponseEntity;
 import ru.skyteam.pettelegrambot.entity.LastAction;
-import ru.skyteam.pettelegrambot.entity.Parent;
 import ru.skyteam.pettelegrambot.entity.User;
 
 import java.util.List;

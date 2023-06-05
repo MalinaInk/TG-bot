@@ -1,4 +1,5 @@
 package ru.skyteam.pettelegrambot.service;
+
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -8,14 +9,15 @@ import ru.skyteam.pettelegrambot.entity.Pet;
 import ru.skyteam.pettelegrambot.entity.PetType;
 import ru.skyteam.pettelegrambot.entity.Shelter;
 import ru.skyteam.pettelegrambot.repository.PetRepository;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 
 @ExtendWith(MockitoExtension.class)
