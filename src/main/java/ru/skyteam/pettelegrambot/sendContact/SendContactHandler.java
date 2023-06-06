@@ -66,7 +66,7 @@ public class SendContactHandler {
             }
             case WAITING_USER_FULL_NAME: {
                 String fullName = update.message().text();
-                parent.setId(chatId);
+                parent.setChatId(chatId);
                 parent.setFullName(fullName);
 
                 sendMessage(chatId,
