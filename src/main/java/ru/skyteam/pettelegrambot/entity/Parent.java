@@ -37,6 +37,17 @@ public class Parent {
         this.pets = pets;
     }
 
+    public Parent(Long chatId, String fullName, String phoneNumber) {
+        this.chatId = chatId;
+        this.fullName = fullName;
+        this.phoneNumber = phoneNumber;
+    }
+
+    public Parent(Long chatId, String fullName) {
+        this.chatId = chatId;
+        this.fullName = fullName;
+    }
+
     public Long getId() {
         return id;
     }
