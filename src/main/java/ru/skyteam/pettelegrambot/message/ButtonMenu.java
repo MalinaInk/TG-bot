@@ -11,6 +11,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ru.skyteam.pettelegrambot.listener.TelegramBotUpdatesListener;
 
+;
+
 @RequiredArgsConstructor
 @Service
 public class ButtonMenu {
@@ -31,6 +33,7 @@ public class ButtonMenu {
 
         sendButtonMessage(chatId, BotReplayMessage.START,keyboardMarkup);
     }
+
 //Основное меню
     public void meinMenu(Long chatId){
         logger.info("Вызвано главное меню: {}", chatId);
@@ -47,7 +50,8 @@ public class ButtonMenu {
 
 
         InlineKeyboardMarkup keyboardMarkup = new InlineKeyboardMarkup(button1, button2);
-        keyboardMarkup.addRow(button3, button4);
+        keyboardMarkup.addRow(button3);
+        keyboardMarkup.addRow(button4);
         keyboardMarkup.addRow(button5);
 
         sendButtonMessage(chatId, BotReplayMessage.MAIN_MENU,keyboardMarkup);
@@ -79,11 +83,57 @@ public class ButtonMenu {
     }
 
     //Меню консультации
-    public void consultationMenu(Long chatId){
-        logger.info("Вызвано меню консультации с потенциальным хозяином животного из приюта");
+    public void consDogMenu(Long chatId){
+        logger.info("Вызвано меню конслуьтации с потенциальным хозяином: {}", chatId);
         InlineKeyboardButton button1 = new InlineKeyboardButton(BotMenu.DATING_RULES);
         InlineKeyboardButton button2 = new InlineKeyboardButton(BotMenu.REQUIRED_DOCUMENTS);
         InlineKeyboardButton button3 = new InlineKeyboardButton(BotMenu.PET_TRANSPORT);
+        InlineKeyboardButton button4 = new InlineKeyboardButton(BotMenu.DISABILITIES_PET_HOUSE);
+        InlineKeyboardButton button5 = new InlineKeyboardButton(BotMenu.PUPPY_HOUSE);
+        InlineKeyboardButton button6 = new InlineKeyboardButton(BotMenu.ADULT_DOG_HOUSE);
+        InlineKeyboardButton button7 = new InlineKeyboardButton(BotMenu.ADVICE_CYNOLOGIST);
+        InlineKeyboardButton button8 = new InlineKeyboardButton(BotMenu.DOG_CYNOLOGIST);
+
+        button1.callbackData(BotMenu.DATING_RULES);
+        button2.callbackData(BotMenu.REQUIRED_DOCUMENTS);
+        button3.callbackData(BotMenu.PET_TRANSPORT);
+        button4.callbackData(BotMenu.DISABILITIES_PET_HOUSE);
+        button5.callbackData(BotMenu.PUPPY_HOUSE);
+        button6.callbackData(BotMenu.ADULT_DOG_HOUSE);
+        button7.callbackData(BotMenu.ADVICE_CYNOLOGIST);
+        button8.callbackData(BotMenu.DOG_CYNOLOGIST);
+
+        InlineKeyboardMarkup keyboardMarkup = new InlineKeyboardMarkup(button1);
+        keyboardMarkup.addRow(button2);
+        keyboardMarkup.addRow(button5, button6);
+        keyboardMarkup.addRow(button8, button7);
+        keyboardMarkup.addRow(button3, button4);
+
+        sendButtonMessage(chatId, BotReplayMessage.POTENTIAL_PET_PARENT_HELLO, keyboardMarkup);
+    }
+
+
+    public void consultationMenuCat(Long chatId){
+        logger.info("Вызвано меню консультации с потенциальным хозяином животного из приюта: {}", chatId);
+        InlineKeyboardButton button1 = new InlineKeyboardButton(BotMenu.DATING_RULES);
+        InlineKeyboardButton button2 = new InlineKeyboardButton(BotMenu.REQUIRED_DOCUMENTS);
+        InlineKeyboardButton button3 = new InlineKeyboardButton(BotMenu.PET_TRANSPORT);
+        InlineKeyboardButton button4 = new InlineKeyboardButton(BotMenu.DISABILITIES_PET_HOUSE);
+        InlineKeyboardButton button7 = new InlineKeyboardButton(BotMenu.CAT_HOUSE);
+
+        button1.callbackData(BotMenu.DATING_RULES);
+        button2.callbackData(BotMenu.REQUIRED_DOCUMENTS);
+        button3.callbackData(BotMenu.PET_TRANSPORT);
+        button4.callbackData(BotMenu.DISABILITIES_PET_HOUSE);
+        button7.callbackData(BotMenu.CAT_HOUSE);
+
+
+        InlineKeyboardMarkup keyboardMarkup = new InlineKeyboardMarkup(button1, button2);
+        keyboardMarkup.addRow(button3, button4);
+            keyboardMarkup.addRow(button7);
+
+        sendButtonMessage(chatId, BotReplayMessage.POTENTIAL_PET_PARENT_HELLO,keyboardMarkup);
+
 
     }
 

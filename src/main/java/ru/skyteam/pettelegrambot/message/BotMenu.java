@@ -30,15 +30,15 @@ public class BotMenu {
 
     public static final String REQUIRED_DOCUMENTS = "Список необходимых документов";
 
-    public static final String PET_TRANSPORT = "Рекомендации по транспортировке животного";
+    public static final String PET_TRANSPORT = "Рекомендации по транспортировке";
 
-    public static final String PUPPY_HOUSE = "Как обустроить дом для щенка";
+    public static final String PUPPY_HOUSE = "Дом для щенка";
 
-    public static final String ADULT_DOG_HOUSE = "Как обустроить дом для взрослой собаки";
+    public static final String ADULT_DOG_HOUSE = "Дом для собаки";
 
     public static final String CAT_HOUSE = "Как обустроить дом для кошки";
 
-    public static final String DISABILITIES_PET_HOUSE = "Как обустроить дом для питомца с ограниченными возможностями";
+    public static final String DISABILITIES_PET_HOUSE = "Дом для питомца инвалида";
 
     public static final String ADVICE_CYNOLOGIST = "Советы кинолога";
 

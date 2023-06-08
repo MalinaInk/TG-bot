@@ -21,11 +21,15 @@ public class User {
     @Column(name = "last_action")
     private LastAction lastAction;
 
-    public User(Long id, Long chatId) {
+    @Column(name = "phone_number")
+    private String phoneNumber;
+
+    public User(Long id, Long chatId, PetType petType, String phoneNumber) {
         this.id = id;
         this.chatId = chatId;
+        this.petType = petType;
+        this.phoneNumber = phoneNumber;
     }
-
     public User(Long id, Long chatId, PetType petType, LastAction lastAction) {
         this.id = id;
         this.chatId = chatId;
@@ -34,6 +38,10 @@ public class User {
     }
 
     public User() {
+    }
+
+    public User(Long chatId) {
+        this.chatId = chatId;
     }
 
     public Long getId() {
@@ -66,6 +74,14 @@ public class User {
 
     public void setLastAction(LastAction lastAction) {
         this.lastAction = lastAction;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     @Override
