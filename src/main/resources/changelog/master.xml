@@ -23,7 +23,8 @@
 
     <include file="changelog/table/update-table/update-parent-table-v2-remove-column.xml"/>
     <include file="changelog/table/update-table/update-pet-table-v2-add-columns.xml"/>
-    <include file="changelog/table/update-table/update-user-tableV2.xml"/>
+
     <include file="changelog/table/update-table/update-user-table-number.xml"/>
+    <include file="changelog/table/update-table/update-user-table-v2-add-column.xml"/>
 
 </databaseChangeLog>

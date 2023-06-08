@@ -11,7 +11,7 @@ import ru.skyteam.pettelegrambot.repository.ParentRepository;
 import java.util.List;
 
 @Service
-public class ParentServiceImpl implements ParentService{
+public class ParentServiceImpl implements ParentService {
     private final ParentRepository parentRepository;
     Logger logger = LoggerFactory.getLogger(ParentServiceImpl.class);
 
@@ -22,6 +22,7 @@ public class ParentServiceImpl implements ParentService{
     /**
      * create parent
      * {@link JpaRepository#save(Object)}
+     *
      * @param parent
      * @return object parent
      */
@@ -33,6 +34,7 @@ public class ParentServiceImpl implements ParentService{
     /**
      * read parent
      * {@link JpaRepository#findById(Object)}
+     *
      * @param id
      * @return object parent
      */
@@ -44,6 +46,7 @@ public class ParentServiceImpl implements ParentService{
     /**
      * update parent
      * {@link JpaRepository#save(Object)}
+     *
      * @param parent
      * @return object parent
      */
@@ -55,6 +58,7 @@ public class ParentServiceImpl implements ParentService{
     /**
      * delete parent
      * {@link JpaRepository#delete(Object)}
+     *
      * @param id
      * @return object parent
      */
@@ -67,6 +71,7 @@ public class ParentServiceImpl implements ParentService{
     /**
      * read all parents
      * {@link JpaRepository#findAll()}
+     *
      * @return List Parent
      */
     public List<Parent> readAll() {
@@ -74,9 +79,7 @@ public class ParentServiceImpl implements ParentService{
         return parentRepository.findAll();
     }
 
-    public Parent findParentByChatId(Long chatId) {
-      return parentRepository.getParentByChatId(chatId);
-    }
+    public Parent findParentByChatId(Long chatId) {return parentRepository.getParentByChatId(chatId);}
     public Parent save(Parent parent) {
         return parentRepository.save(parent);
     }

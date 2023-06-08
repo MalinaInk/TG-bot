@@ -11,6 +11,7 @@ public interface ParentRepository extends JpaRepository<Parent, Long> {
     Parent getParentByChatId(Long id);
 
     Parent getParentById(Long id);
+    public Parent save(Parent parent);
 
 
 }
