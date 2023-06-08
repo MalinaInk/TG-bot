@@ -29,7 +29,7 @@ public class UserServiceTest {
 
     @Test
     public void createTest() {
-        User user1 = new User(12L,156L,PetType.DOG, null);
+        User user1 = new User(12L,156L,PetType.DOG, "12345678");
         when(userRepository.save(user1)).thenReturn(user1);
         assertThat(user1).isEqualTo(userServiceImpl.create(user1));
         assertThat(userServiceImpl.create(user1)).isNotNull();
@@ -37,7 +37,7 @@ public class UserServiceTest {
 
     @Test
     public void readTest() {
-        User user1 = new User(12L,156L,PetType.DOG, null);
+        User user1 = new User(12L,156L,PetType.DOG, "12345678");
         when(userRepository.getUserById(1L)).thenReturn(user1);
         assertThat(user1).isEqualTo(userServiceImpl.read(1L));
         assertThat(userServiceImpl.read(1L)).isNotNull();
@@ -60,7 +60,7 @@ public class UserServiceTest {
     @Test
     public void readAllTest() {
         List<User> arr = new ArrayList<User>(3);
-        User user1 = new User(12L,156L,PetType.DOG, null);
+        User user1 = new User(12L,156L,PetType.DOG, "12345678");
         User user2 = new User(52L,186L,PetType.CAT, LastAction.START_CONTACT);
         User user3 = new User(22L,86L,PetType.CAT, LastAction.WAITING_USER_FULL_NAME);
         arr.add(user1);
