@@ -26,9 +26,6 @@ public class Parent {
     @OneToMany(mappedBy = "parent")
     private List<Pet> pets;
 
-    public Parent() {
-    }
-
     public Parent(Long id, Long chatId, String fullName, String phoneNumber, List<Pet> pets) {
         this.id = id;
         this.chatId = chatId;
@@ -36,6 +33,11 @@ public class Parent {
         this.phoneNumber = phoneNumber;
         this.pets = pets;
     }
+
+    public Parent() {
+
+    }
+
 
     public Long getId() {
         return id;
