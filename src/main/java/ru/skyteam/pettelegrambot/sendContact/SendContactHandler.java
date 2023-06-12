@@ -99,6 +99,7 @@ public class SendContactHandler {
                 break;
             }
         }
+
     }
 
     public void sendMessage(Long chatId, String textToSend) {
