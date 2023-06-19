@@ -46,30 +46,6 @@ public class SendContactHandlerTest {
         Message message = Mockito.mock(Message.class);
         Chat chat = Mockito.mock(Chat.class);
         User user = Mockito.mock(User.class);
-
-        SendResponse response = mock(SendResponse.class);
-        when(response.isOk()).thenReturn(true);
-        when(telegramBot.execute(any(SendMessage.class))).thenReturn(response);
-
-        when(update.message()).thenReturn(message);
-        when(message.chat()).thenReturn(chat);
-        when(chat.id()).thenReturn(123456L);
-        when(userService.findUserByChatId(123456L)).thenReturn(user);
-        when(user.getLastAction()).thenReturn(LastAction.START_CONTACT);
-
-        sendContactHandler.handleContact(update);
-        sendContactHandler.sendMessage(123456L, """
-                Введите Ваши Имя и Фамилию:
-                """);
-        verify(user).setLastAction(LastAction.WAITING_USER_FULL_NAME);
-    }
-
-    @Test
-    void testHandleWaitingUserFullName() {
-        Update update = Mockito.mock(Update.class);
-        Message message = Mockito.mock(Message.class);
-        Chat chat = Mockito.mock(Chat.class);
-        User user = Mockito.mock(User.class);
         String fullName = "Иванов Иван";
 
         SendResponse response = mock(SendResponse.class);
@@ -80,14 +56,13 @@ public class SendContactHandlerTest {
         when(message.chat()).thenReturn(chat);
         when(chat.id()).thenReturn(123456L);
         when(userService.findUserByChatId(123456L)).thenReturn(user);
-        when(user.getLastAction()).thenReturn(LastAction.WAITING_USER_FULL_NAME);
+        when(user.getLastAction()).thenReturn(LastAction.START_CONTACT);
         when(update.message().text()).thenReturn(fullName);
 
         sendContactHandler.handleContact(update);
         sendContactHandler.sendMessage(123456L, """
-                Введите Ваш номер телефона:
+                Пожалуйста, введите номер телефона в формате +7 XXX XXX XX XX
                 """);
-
         parent.setFullName(fullName);
         when(parentService.save(parent)).thenReturn(parent);
         Parent savedParent = parentService.save(parent);
@@ -118,7 +93,9 @@ public class SendContactHandlerTest {
 
         sendContactHandler.handleContact(update);
         sendContactHandler.sendMessage(123456L, """
-                Контактные данные успешно сохранены. Спасибо!
+                Контактные данные успешно сохранены. Спасибо! +
+                В случае, если Вы по ошибке ввели не свой номер телефона, Вы можете связаться с +
+                волонтером - клавиша в главном меню
                 """);
 
         parent.setPhoneNumber(phoneNumber);

@@ -12,10 +12,10 @@ public class PetServiceImpl implements PetService{
     private  ParentServiceImpl parentServiceImpl;
     private  PetRepository petRepository;
 
-//    public PetServiceImpl() {
-//        this.parentServiceImpl = parentServiceImpl;
-//        this.petRepository = petRepository;
-//    }
+   public PetServiceImpl(ParentServiceImpl parentServiceImpl, PetRepository petRepository ) {
+       this.parentServiceImpl = parentServiceImpl;
+       this.petRepository = petRepository;
+   }
 
     @Override
     public Pet create(Pet pet) {

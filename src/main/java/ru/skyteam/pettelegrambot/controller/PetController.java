@@ -6,7 +6,9 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.skyteam.pettelegrambot.entity.Parent;
 import ru.skyteam.pettelegrambot.entity.Pet;
 import ru.skyteam.pettelegrambot.repository.PetRepository;
 import ru.skyteam.pettelegrambot.service.ParentService;
@@ -93,9 +95,14 @@ public class PetController {
                             )
                     )
             })
-    @PutMapping("/update")
-    public Pet update(@PathVariable Pet pet) {
-        return petRepository.save(pet);
+    @PutMapping("/update/{id}")
+
+   public ResponseEntity<Pet> update(@RequestBody Pet pet) {
+     Pet pet1 = petService.update(pet);
+       if (pet1 == null) {
+           return ResponseEntity.notFound().build();
+       }
+       return ResponseEntity.ok(pet1);
     }
 
     @Operation(

@@ -122,7 +122,7 @@ public class Report {
         this.pathToPhoto = pathToPhoto;
     }
 
-    public Boolean getCorrect() {
+    public Boolean getIsCorrect() {
         return isCorrect;
     }
 

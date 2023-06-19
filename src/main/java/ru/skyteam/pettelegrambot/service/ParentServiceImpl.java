@@ -75,7 +75,7 @@ public class ParentServiceImpl implements ParentService {
      * @return List Parent
      */
     public List<Parent> readAll() {
-        logger.info("method [update]");
+        logger.info("method [readAll]");
         return parentRepository.findAll();
     }
 

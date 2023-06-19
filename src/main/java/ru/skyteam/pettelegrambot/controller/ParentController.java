@@ -94,10 +94,10 @@ public class ParentController {
     @PutMapping("/update/{id}")
     public ResponseEntity<Parent> update(@RequestBody Parent parent) {
         Parent parent1 = parentService.update(parent);
-        if (parent1 == null) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(parent1);
+       if (parent1 == null) {
+           return ResponseEntity.notFound().build();
+       }
+       return ResponseEntity.ok(parent1);
 
     }
 
@@ -171,7 +171,7 @@ public class ParentController {
                     )
             })
 
-    @GetMapping("/findParentByChatId")
+    @GetMapping("/findParentByChatId/{chatId}")
     public Parent findParentByChatId(Long chatId) {
         return parentRepository.getParentByChatId(chatId);
     }

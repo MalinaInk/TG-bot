@@ -64,8 +64,8 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                     if ("/start".equals(text)) {
                         buttonMenu.petMenu(chatId);
                     }else if (text != null){
- //                       sendContactHandler.handleContact(update);
-                        sendContact(update);
+                        sendContactHandler.handleContact(update);
+ //                       sendContact(update);
                     } else {
                         sendMessage(chatId, "Неверный запрос");
                     }

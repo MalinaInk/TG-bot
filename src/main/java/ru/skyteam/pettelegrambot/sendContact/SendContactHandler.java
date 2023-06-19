@@ -16,14 +16,13 @@ import ru.skyteam.pettelegrambot.service.UserService;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 @Component
 public class SendContactHandler {
 
 
     private final Logger logger = LoggerFactory.getLogger(SendContactHandler.class);
     private final Pattern PATTERN = Pattern.compile(
-            "^(\\+7|7|8)?[\\s\\-]?\\(?[489][0-9]{2}\\)?[\\s\\-]?[0-9]{3}[\\s\\-]?[0-9]{2}[\\s\\-]?[0-9]{2}$");
+         "^(\\+7|7|8)?[\\s\\-]?\\(?[489][0-9]{2}\\)?[\\s\\-]?[0-9]{3}[\\s\\-]?[0-9]{2}[\\s\\-]?[0-9]{2}$");
     @Autowired
     TelegramBot telegramBot;
     @Autowired
@@ -42,38 +41,35 @@ public class SendContactHandler {
      * сохранение пользователя с контактами как потенциального усыновителя</i>
      * <br>Использует {@link  #userService} и {@link #parentService}
      * <br> @see {@link #userService findUserByChatId}
+     *
      * @param update (user's updates to contact details)
      * @return obj parent
      */
 
-    public void handleContact (Update update) {
+    public void handleContact(Update update) {
         Long chatId = update.message().chat().id();
-        User user = userService.findUserByChatId(chatId);
-        Parent parent = new Parent();
-
+                User user = userService.findUserByChatId(chatId);
+        if (user == null) {
+            user = new User();
+            user.setChatId(chatId);
+        }
+        Parent parent = parentService.findParentByChatId(chatId);
+        if (parent == null) {
+            parent = new Parent();
+            parent.setChatId(chatId);
+        }
         if (user.getLastAction() == null) {
             user.setLastAction(LastAction.START_CONTACT);
         }
-
         switch (user.getLastAction()) {
             case START_CONTACT: {
-                sendMessage(chatId,
-                        """
-                        Введите Ваши Имя и Фамилию:
-                        """);
-                user.setLastAction(LastAction.WAITING_USER_FULL_NAME);
-                break;
-            }
-            case WAITING_USER_FULL_NAME: {
                 String fullName = update.message().text();
-                parent.setChatId(chatId);
-                parent.setFullName(fullName);
 
-                sendMessage(chatId,
-                        """
-                                Введите Ваш номер телефона:
-                                """);
+                parent.setFullName(fullName);
+                parentService.save(parent);
                 user.setLastAction(LastAction.WAITING_USER_PHONE);
+                userService.save(user);
+                sendMessage(chatId, "Пожалуйста, введите номер телефона в формате +7 XXX XXX XX XX");
                 break;
             }
             case WAITING_USER_PHONE: {
@@ -83,24 +79,22 @@ public class SendContactHandler {
                 if (matcher.matches()) {
                     parent.setPhoneNumber(phoneNumber);
                     parentService.save(parent);
-
                     user.setLastAction(LastAction.DONE_CONTACT);
-                    sendMessage(chatId,
-                            """
-                Контактные данные успешно сохранены. Спасибо!
-                """);
+                    userService.save(user);
+
+                    sendMessage(chatId, "Контактные данные успешно сохранены. Спасибо!" +
+                            "В случае, если Вы по ошибке ввели не свой номер телефона, Вы можете связаться с" +
+                            "волонтером - клавиша в главном меню");
                 } else {
-                    sendMessage(chatId,
-                            """
-                    Убедитесь, что вводите номер телефона российского оператора связи, повторите попытку
-                    """);
                     user.setLastAction(LastAction.WAITING_USER_PHONE);
+                    userService.save(user);
+                    sendMessage(chatId, "Убедитесь, что вводите номер телефона российского оператора связи, повторите попытку");
                 }
                 break;
             }
         }
-
     }
+
 
     public void sendMessage(Long chatId, String textToSend) {
         SendMessage message = new SendMessage(chatId, textToSend);

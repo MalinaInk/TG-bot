@@ -12,6 +12,7 @@ public interface UserService {
     public User update(User user);
     public ResponseEntity<User> delete(long id);
     public List<User> readAll();
+    public User save(User user);
     public User findUserByChatId(Long chatId);
     public User getUserByLastAction(LastAction lastAction);
 

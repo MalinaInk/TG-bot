@@ -1,5 +1,6 @@
 package ru.skyteam.pettelegrambot.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -41,6 +42,11 @@ public class Volunteer {
         this.chatId = chatId;
         this.fullName = fullName;
         this.shelter = shelter;
+    }
+    public Volunteer(Long id, Long chatId, String fullName) {
+        this.id = id;
+        this.chatId = chatId;
+        this.fullName = fullName;
     }
 
     public Long getId() {

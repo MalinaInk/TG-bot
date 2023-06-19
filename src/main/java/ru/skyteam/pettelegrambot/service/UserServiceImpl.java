@@ -84,7 +84,6 @@ public class UserServiceImpl implements UserService{
         logger.info("method [findUserByChatId]");
         return userRepository.getUserByChatId(chatId);
     }
-
     /**
      * сохраняем пользователя в базу
      * <br>Использует {@link  #userRepository}

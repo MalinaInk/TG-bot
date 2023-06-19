@@ -22,12 +22,12 @@ public class ReportServiceImpl implements ReportService {
 
     @Override
     public Report create(Report report) {
-        return null;
+        return reportRepository.save(report);
     }
 
     @Override
     public Report read(long id) {
-        return null;
+        return reportRepository.getReportById(id);
     }
 
     @Override
@@ -37,12 +37,13 @@ public class ReportServiceImpl implements ReportService {
 
     @Override
     public ResponseEntity<Report> delete(long id) {
-        return null;
+        reportRepository.deleteById(id);
+        return ResponseEntity.ok().build();
     }
 
     @Override
     public List<Report> readAll() {
-        return null;
+        return reportRepository.findAll();
     }
 
     public Report save(Report report) {
