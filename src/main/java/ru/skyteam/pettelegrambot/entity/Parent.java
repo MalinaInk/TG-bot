@@ -1,5 +1,7 @@
 package ru.skyteam.pettelegrambot.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.List;
@@ -22,7 +24,6 @@ public class Parent {
 
     @Column(name = "phone_number")
     private String phoneNumber;
-
     @OneToMany(mappedBy = "parent")
     private List<Pet> pets;
 
@@ -34,7 +35,6 @@ public class Parent {
         this.pets = pets;
     }
 
- ed_feature
     public Parent() {
 
     }

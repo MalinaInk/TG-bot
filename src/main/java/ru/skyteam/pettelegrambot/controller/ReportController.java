@@ -6,10 +6,12 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.skyteam.pettelegrambot.entity.Parent;
 import ru.skyteam.pettelegrambot.entity.Pet;
 import ru.skyteam.pettelegrambot.entity.Report;
+import ru.skyteam.pettelegrambot.entity.Volunteer;
 import ru.skyteam.pettelegrambot.repository.ReportRepository;
 import ru.skyteam.pettelegrambot.service.ReportService;
 
@@ -92,9 +94,13 @@ public class ReportController {
                             )
                     )
             })
-    @PutMapping("/update")
-    public void update(@RequestBody Pet pet) {
-        reportService.update(pet);
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Report> update(@RequestBody Report report) {
+        Report report1 = reportService.save(report);
+        if (report1 == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(report1);
     }
 
     @Operation(

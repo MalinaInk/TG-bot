@@ -141,7 +141,7 @@ public class TelegramBotReminder {
         quantityBadReports = (int) (ChronoUnit.DAYS.between(startPeriod, endPeriod.plusDays(1))) - reports.size();
 
         quantityBadReports += (int) (reports.stream()
-                .filter(r -> !r.getCorrect()).count());
+                .filter(r -> !r.getIsCorrect()).count());
 
         return quantityBadReports;
     }
