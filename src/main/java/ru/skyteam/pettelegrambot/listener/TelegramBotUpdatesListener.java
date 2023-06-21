@@ -43,7 +43,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     private final SendContactHandler sendContactHandler;
     private UserRepository userRepository;
     private User user;
-
+    @Autowired
     private UserService userService;
 
 
@@ -79,13 +79,22 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
 
                     switch (data) {
                         case (BotMenu.INFO_CAT):
-                            user = new User(chatId);
+                            userService.findUserByChatId(chatId);
+                            if (user== null ) {
+                                user = new User(chatId);
+                            }
                             user.setPetType(PetType.CAT);
+                            userService.save(user);
                             buttonMenu.meinMenu(chatId);
                             break;
                         case (BotMenu.INFO_DOG):
-                            user = new User(chatId);
+//                            user = new User(chatId);
+                            userService.findUserByChatId(chatId);
+                            if (user== null ) {
+                                user = new User(chatId);
+                            }
                             user.setPetType(PetType.DOG);
+                            userService.save(user);
                             buttonMenu.meinMenu(chatId);
                             break;
                         case (BotMenu.CALL_VOLUNTEER):
@@ -179,19 +188,19 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
 
     //Метод для отправки пользователем своих контактных данных
 
-    public void sendContact(Update update){
-        Pattern pattern = Pattern.compile("[+7].\\d{10}");
-//        String name = update.message().chat().firstName();
-        String text = update.message().text();
-        Long chatId = update.message().chat().id();
-        Matcher matcher = pattern.matcher(text);
-        if (matcher.matches()){
-        String phoneNumber = matcher.group(0);
-        user.setPhoneNumber(phoneNumber);
-        user.setChatId(chatId);
-        sendMessage(chatId, "Мы вам презвоним");
-        } else {
-            sendMessage(chatId, "Не корректо введен номер телефона");
-        }
-    }
+//    public void sendContact(Update update){
+//        Pattern pattern = Pattern.compile("[+7].\\d{10}");
+////        String name = update.message().chat().firstName();
+//        String text = update.message().text();
+//        Long chatId = update.message().chat().id();
+//        Matcher matcher = pattern.matcher(text);
+//        if (matcher.matches()){
+//        String phoneNumber = matcher.group(0);
+//        user.setPhoneNumber(phoneNumber);
+//        user.setChatId(chatId);
+//        sendMessage(chatId, "Мы вам презвоним");
+//        } else {
+//            sendMessage(chatId, "Не корректо введен номер телефона");
+//        }
+//    }
 }
