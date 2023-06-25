@@ -24,7 +24,7 @@ public class Parent {
 
     @Column(name = "phone_number")
     private String phoneNumber;
-    @OneToMany(mappedBy = "parent")
+    @OneToMany(mappedBy = "parent", fetch = FetchType.EAGER)
     private List<Pet> pets;
 
     public Parent(Long id, Long chatId, String fullName, String phoneNumber, List<Pet> pets) {

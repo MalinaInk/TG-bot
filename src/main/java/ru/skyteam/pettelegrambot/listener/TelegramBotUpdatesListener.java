@@ -7,7 +7,6 @@ import com.pengrad.telegrambot.model.Message;
 import com.pengrad.telegrambot.model.Update;
 import com.pengrad.telegrambot.request.SendMessage;
 import com.pengrad.telegrambot.response.SendResponse;
-//import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -15,7 +14,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.skyteam.pettelegrambot.entity.LastAction;
-import ru.skyteam.pettelegrambot.entity.Parent;
 import ru.skyteam.pettelegrambot.entity.PetType;
 import ru.skyteam.pettelegrambot.entity.User;
 import ru.skyteam.pettelegrambot.exception.PhotoUploadException;
@@ -23,14 +21,11 @@ import ru.skyteam.pettelegrambot.message.BotMenu;
 import ru.skyteam.pettelegrambot.message.BotReplayMessage;
 import ru.skyteam.pettelegrambot.message.ButtonMenu;
 import ru.skyteam.pettelegrambot.report.ReportHandler;
-import ru.skyteam.pettelegrambot.sendContact.SendContactHandler;
 import ru.skyteam.pettelegrambot.repository.UserRepository;
+import ru.skyteam.pettelegrambot.sendContact.SendContactHandler;
 import ru.skyteam.pettelegrambot.service.UserService;
 
-
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @RequiredArgsConstructor
 @Component
@@ -57,45 +52,76 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
         try {
             updates.forEach(update -> {
                 logger.info("Handles updates: {}", update);
+                Long chatId;
                 if (update.message() != null) {
                     Message message = update.message();
-                    Long chatId = message.chat().id();
+                    chatId = message.chat().id();
                     String text = message.text();
-                    if ("/start".equals(text)) {
-                        buttonMenu.petMenu(chatId);
-                    }else if (text != null){
-                        sendContactHandler.handleContact(update);
- //                       sendContact(update);
-                    } else {
-                        sendMessage(chatId, "Неверный запрос");
+                    user = userService.findUserByChatId(chatId);
+
+                    if (user == null) {
+                        user = new User(chatId);
+                        userService.save(user);
                     }
 
+                    if ("/start".equals(text)) {
+                        buttonMenu.petMenu(chatId);
+
+                    } else if (user.getLastAction() == null ||
+                            user.getLastAction() == LastAction.DONE ||
+                            user.getLastAction() == LastAction.DONE_CONTACT) {
+                        sendMessage(chatId, "Неверный запрос");
+                    } else if (user.getLastAction() == LastAction.START_CONTACT
+                            || user.getLastAction() == LastAction.WAITING_USER_FULL_NAME
+                            || user.getLastAction() == LastAction.WAITING_USER_PHONE) {
+                        sendContactHandler.handleContact(update);
+                    } else if (user.getLastAction() == LastAction.START_REPORT
+                            || user.getLastAction() == LastAction.WAITING_PET_NAME
+                            || user.getLastAction() == LastAction.WAITING_DIET_INFO
+                            || user.getLastAction() == LastAction.WAITING_CHANGING_HABITS_INFO
+                            || user.getLastAction() == LastAction.WAITING_HEALTH_INFO) {
+
+                        try {
+                            reportHandler.handle(update);
+                        } catch (PhotoUploadException e) {
+                            throw new RuntimeException(e);
+                        }
+
+                    }
+
+                    if (update.message().photo() != null
+                            && user.getLastAction() == LastAction.WAITING_PHOTO) {
+                        try {
+                            reportHandler.handle(update);
+                        } catch (PhotoUploadException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
 
                 } else if (update.callbackQuery() != null) {
-                    Long chatId = update.callbackQuery().message().chat().id();
+                    chatId = update.callbackQuery().message().chat().id();
                     CallbackQuery callbackQuery = update.callbackQuery();
                     String data = callbackQuery.data();
                     String name = update.callbackQuery().message().chat().firstName();
 
+                    user = userService.findUserByChatId(chatId);
                     switch (data) {
                         case (BotMenu.INFO_CAT):
-                            userService.findUserByChatId(chatId);
-                            if (user== null ) {
+                            if (user == null) {
                                 user = new User(chatId);
                             }
                             user.setPetType(PetType.CAT);
                             userService.save(user);
-                            buttonMenu.meinMenu(chatId);
+                            buttonMenu.mainMenu(chatId);
                             break;
                         case (BotMenu.INFO_DOG):
 //                            user = new User(chatId);
-                            userService.findUserByChatId(chatId);
-                            if (user== null ) {
+                            if (user == null) {
                                 user = new User(chatId);
                             }
                             user.setPetType(PetType.DOG);
                             userService.save(user);
-                            buttonMenu.meinMenu(chatId);
+                            buttonMenu.mainMenu(chatId);
                             break;
                         case (BotMenu.CALL_VOLUNTEER):
                             sendMessage(chatId, BotReplayMessage.VOLUNTEER);
@@ -107,7 +133,9 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                             sendMessage(chatId, BotReplayMessage.SECURITY_PASS);
                             break;
                         case (BotMenu.SEND_CONTACTS):
-                            sendMessage(chatId, BotReplayMessage.CONTACT_INFO);
+                            user.setLastAction(LastAction.START_CONTACT);
+                            userService.save(user);
+                            sendContactHandler.handleContact(update);
                             break;
                         case (BotMenu.PRECAUTION):
                             sendMessage(chatId, BotReplayMessage.INFO_PRECAUTION);
@@ -116,7 +144,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                             sendMessage(chatId, BotReplayMessage.INFO_SHELTER);
                             break;
                         case (BotMenu.IN_MAIN_MENU):
-                            buttonMenu.meinMenu(chatId);
+                            buttonMenu.mainMenu(chatId);
                             break;
                         case (BotMenu.IN_PET_MENU):
                             buttonMenu.petMenu(chatId);
@@ -127,6 +155,7 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                             } else {
                                 buttonMenu.consDogMenu(chatId);
                             }
+
                             break;
                         case (BotMenu.DATING_RULES):
                             sendMessage(chatId, BotReplayMessage.POTENTIAL_PET_PARENT_RULES);
@@ -156,24 +185,27 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
                             sendMessage(chatId, BotReplayMessage.RECOMMENDATIONS_FOR_CAT_HOME);
                             break;
                         case (BotMenu.SEND_REPORT):
-                            sendMessage(chatId, BotReplayMessage.REPORT_FORM);
                             try {
+
+                                user.setLastAction(LastAction.START_REPORT);
+                                userService.save(user);
                                 reportHandler.handle(update);
+
                             } catch (PhotoUploadException e) {
                                 throw new RuntimeException(e);
                             }
                             break;
-
                     }
-
                 }
+
             });
 
-
-        } catch (Exception e) {
+        } catch (
+                Exception e) {
             logger.error(e.getMessage(), e);
         }
         return UpdatesListener.CONFIRMED_UPDATES_ALL;
+
     }
 
 
@@ -185,22 +217,4 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
         }
 
     }
-
-    //Метод для отправки пользователем своих контактных данных
-
-//    public void sendContact(Update update){
-//        Pattern pattern = Pattern.compile("[+7].\\d{10}");
-////        String name = update.message().chat().firstName();
-//        String text = update.message().text();
-//        Long chatId = update.message().chat().id();
-//        Matcher matcher = pattern.matcher(text);
-//        if (matcher.matches()){
-//        String phoneNumber = matcher.group(0);
-//        user.setPhoneNumber(phoneNumber);
-//        user.setChatId(chatId);
-//        sendMessage(chatId, "Мы вам презвоним");
-//        } else {
-//            sendMessage(chatId, "Не корректо введен номер телефона");
-//        }
-//    }
 }

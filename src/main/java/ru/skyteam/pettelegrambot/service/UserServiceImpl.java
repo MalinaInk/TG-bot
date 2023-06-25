@@ -91,6 +91,10 @@ public class UserServiceImpl implements UserService{
      */
     public User save(User user) {
         logger.info("method [save]");
+        User oldUser = userRepository.getUserByChatId(user.getChatId());
+        if(oldUser != null){
+            user.setId(oldUser.getId());
+        }
         return userRepository.save(user);
     }
 
