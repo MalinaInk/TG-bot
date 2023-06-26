@@ -35,7 +35,7 @@ public class ButtonMenu {
     }
 
 //Основное меню
-    public void meinMenu(Long chatId){
+    public void mainMenu(Long chatId){
         logger.info("Вызвано главное меню: {}", chatId);
         InlineKeyboardButton button1 = new InlineKeyboardButton(BotMenu.HOW_TO_ADOPT);
         InlineKeyboardButton button2 = new InlineKeyboardButton(BotMenu.CALL_VOLUNTEER);

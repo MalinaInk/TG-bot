@@ -8,13 +8,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import ru.skyteam.pettelegrambot.entity.LastAction;
-import ru.skyteam.pettelegrambot.entity.Pet;
-import ru.skyteam.pettelegrambot.entity.Report;
+import ru.skyteam.pettelegrambot.entity.*;
 import ru.skyteam.pettelegrambot.exception.PhotoUploadException;
-import ru.skyteam.pettelegrambot.service.ParentServiceImpl;
-import ru.skyteam.pettelegrambot.service.PetServiceImpl;
-import ru.skyteam.pettelegrambot.service.ReportServiceImpl;
+import ru.skyteam.pettelegrambot.message.ButtonMenu;
+import ru.skyteam.pettelegrambot.service.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -32,6 +29,11 @@ public class ReportHandler {
     ParentServiceImpl parentService;
 
     @Autowired
+    UserServiceImpl userService;
+    @Autowired
+    private ButtonMenu buttonMenu;
+
+    @Autowired
     PhotoHandler photoHandler;
 
     public ReportHandler() {
@@ -42,6 +44,7 @@ public class ReportHandler {
      * <br>по полю</u></b> <i>"chatId"</i>
      * <br><i>
      * <br>Использует {@link #petService}
+     *
      * @param chatId (user's updates to report-form)
      * @return список питомцев (List &lt;Pet&gt;  )
      */
@@ -55,26 +58,49 @@ public class ReportHandler {
      * обрабатывая данные из соответствующих апдейтов</i>
      * <br>Использует {@link  #reportService} и {@link #petService}
      * <br> @see {@link #reportService reportFindLastByParent}
+     *
      * @param chatId (user's chatId)
      * @return Report
      */
     public Report getReport(Long chatId) {
-        return reportService.reportFindLastByParent(parentService.findParentByChatId(chatId));
+        Parent parent = parentService.findParentByChatId(chatId);
+        if (parent == null) {
+            return null;
+        }
+        return reportService.reportFindLastByParent(parent);
     }
 
     /**
      * <b><u>Последовательная обработка апдейтов для заполнения отчета</u></b>
      * <i>Устанавливаем контекст ожидания, <br>
      * обрабатываем согласно контексту</i>
-     * @throws PhotoUploadException <br> если произошел сбой при загрузке фото
+     *
      * @param update (user's updates to report-form)
+     * @throws PhotoUploadException <br> если произошел сбой при загрузке фото
      */
     public void handle(Update update) throws PhotoUploadException {
+        Long chatId;
+        if (update.message() != null) {
+            chatId = update.message().chat().id();
+        } else {
+            chatId = update.callbackQuery().message().chat().id();
+        }
+        if (parentService.findParentByChatId(chatId) == null
+                || parentService.findParentByChatId(chatId).getPets() == null ||
+                parentService.findParentByChatId(chatId).getPets().isEmpty()) {
+            sendMessage(chatId, "У вас еще нет питомцев!");
 
-        Long chatId = update.message().chat().id();
-
+            User user = userService.findUserByChatId(chatId);
+            user.setLastAction(LastAction.DONE);
+            userService.save(user);
+            buttonMenu.petMenu(chatId);
+            return;
+        }
         Report report = getReport(chatId);
-        if (report.getLastAction() == null || report.getLastAction() == LastAction.DONE) {
+        if (report == null) {
+            report = new Report();
+            report.setLastAction(LastAction.START_REPORT);
+        } else if (report.getLastAction() == null || report.getLastAction() == LastAction.DONE) {
             report.setLastAction(LastAction.START_REPORT);
         }
         switch (report.getLastAction()) {
@@ -169,6 +195,9 @@ public class ReportHandler {
                 report.setLastAction(LastAction.DONE);
                 report.setReportDate(LocalDate.now());
                 reportService.save(report);
+                User user = userService.findUserByChatId(chatId);
+                user.setLastAction(LastAction.DONE);
+                userService.save(user);
                 sendMessage(chatId, "Отчет успешно заполнен. Спасибо!");
                 break;
             }

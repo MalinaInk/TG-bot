@@ -16,13 +16,17 @@ import ru.skyteam.pettelegrambot.service.UserService;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static ru.skyteam.pettelegrambot.entity.LastAction.DONE_CONTACT;
+import static ru.skyteam.pettelegrambot.entity.LastAction.WAITING_USER_PHONE;
+
 @Component
 public class SendContactHandler {
 
 
     private final Logger logger = LoggerFactory.getLogger(SendContactHandler.class);
     private final Pattern PATTERN = Pattern.compile(
-         "^(\\+7|7|8)?[\\s\\-]?\\(?[489][0-9]{2}\\)?[\\s\\-]?[0-9]{3}[\\s\\-]?[0-9]{2}[\\s\\-]?[0-9]{2}$");
+            "^(\\+7|7|8)?[\\s\\-]?\\(?[489][0-9]{2}\\)?[\\s\\-]?[0-9]{3}[\\s\\-]?[0-9]{2}[\\s\\-]?[0-9]{2}$");
     @Autowired
     TelegramBot telegramBot;
     @Autowired
@@ -47,8 +51,13 @@ public class SendContactHandler {
      */
 
     public void handleContact(Update update) {
-        Long chatId = update.message().chat().id();
-                User user = userService.findUserByChatId(chatId);
+        Long chatId;
+        if (update.message() != null) {
+            chatId = update.message().chat().id();
+        } else {
+            chatId = update.callbackQuery().message().chat().id();
+        }
+        User user = userService.findUserByChatId(chatId);
         if (user == null) {
             user = new User();
             user.setChatId(chatId);
@@ -63,12 +72,22 @@ public class SendContactHandler {
         }
         switch (user.getLastAction()) {
             case START_CONTACT: {
+                sendMessage(chatId, "Перед тем как взять питомца вы должны оставить свои контактные данные. "
+                        + "Пожалуйста, укажите ваши Имя и Фамилию: ");
+
+                user.setLastAction(LastAction.WAITING_USER_FULL_NAME);
+                userService.save(user);
+                break;
+            }
+
+            case WAITING_USER_FULL_NAME: {
                 String fullName = update.message().text();
 
                 parent.setFullName(fullName);
                 parentService.save(parent);
-                user.setLastAction(LastAction.WAITING_USER_PHONE);
+                user.setLastAction(WAITING_USER_PHONE);
                 userService.save(user);
+
                 sendMessage(chatId, "Пожалуйста, введите номер телефона в формате +7 XXX XXX XX XX");
                 break;
             }
@@ -79,19 +98,18 @@ public class SendContactHandler {
                 if (matcher.matches()) {
                     parent.setPhoneNumber(phoneNumber);
                     parentService.save(parent);
-                    user.setLastAction(LastAction.DONE_CONTACT);
+                    user.setLastAction(DONE_CONTACT);
                     userService.save(user);
-
-                    sendMessage(chatId, "Контактные данные успешно сохранены. Спасибо!" +
-                            "В случае, если Вы по ошибке ввели не свой номер телефона, Вы можете связаться с" +
+                    sendMessage(chatId, "Контактные данные успешно сохранены. Спасибо! " +
+                            "В случае, если Вы по ошибке ввели не свой номер телефона, Вы можете связаться с " +
                             "волонтером - клавиша в главном меню");
                 } else {
-                    user.setLastAction(LastAction.WAITING_USER_PHONE);
-                    userService.save(user);
+
                     sendMessage(chatId, "Убедитесь, что вводите номер телефона российского оператора связи, повторите попытку");
+                    break;
                 }
-                break;
             }
+
         }
     }
 

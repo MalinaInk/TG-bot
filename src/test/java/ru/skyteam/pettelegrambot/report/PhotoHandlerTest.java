@@ -23,7 +23,7 @@ import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 @RunWith(SpringRunner.class)
-//@SpringBootTest
+
 class PhotoHandlerTest {
 
     @MockBean

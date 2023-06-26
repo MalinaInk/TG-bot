@@ -18,11 +18,14 @@ import org.springframework.test.context.junit4.SpringRunner;
 import ru.skyteam.pettelegrambot.entity.Parent;
 import ru.skyteam.pettelegrambot.entity.Pet;
 import ru.skyteam.pettelegrambot.entity.Report;
+import ru.skyteam.pettelegrambot.entity.User;
 import ru.skyteam.pettelegrambot.exception.PhotoUploadException;
 import ru.skyteam.pettelegrambot.listener.TelegramBotUpdatesListener;
+import ru.skyteam.pettelegrambot.message.ButtonMenu;
 import ru.skyteam.pettelegrambot.service.ParentServiceImpl;
 import ru.skyteam.pettelegrambot.service.PetServiceImpl;
 import ru.skyteam.pettelegrambot.service.ReportServiceImpl;
+import ru.skyteam.pettelegrambot.service.UserServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,10 +52,48 @@ class ReportHandlerTest {
     @Mock
     private ReportServiceImpl reportService;
     @Mock
+    private UserServiceImpl userService;
+    @Mock
     private PhotoHandler photoHandler;
 
     @Mock
     private ParentServiceImpl parentService;
+    @Mock
+    private ButtonMenu buttonMenu;
+
+    @Test
+    void getMessage_NoPets() throws PhotoUploadException {
+        Long chatId = 123L;
+        Update update = mock(Update.class);
+        Message message = mock(Message.class);
+        Chat chat = mock(Chat.class);
+        SendResponse response = mock(SendResponse.class);
+        Report report = new Report();
+        Parent parent = new Parent();
+        Pet pet = new Pet();
+        User user = new User();
+        parent.setPets(List.of(pet));
+        pet.setParent(parent);
+        pet.setReports(List.of(report));
+        report.setPet(pet);
+        report.setParent(parent);
+        when(response.isOk()).thenReturn(true);
+        when(update.message()).thenReturn(message);
+        when(message.chat()).thenReturn(chat);
+        when(message.chat().id()).thenReturn(chatId);
+        when(userService.findUserByChatId(chatId)).thenReturn(user);
+        String expected = "У вас еще нет питомцев!";
+        when(telegramBot.execute(any())).then((invocation) -> {
+            Object arg = invocation.getArgument(0);
+            SendMessage messageArg = (SendMessage) arg;
+            Assertions.assertThat(messageArg.getParameters().get("text")).isEqualTo(expected);
+
+            return response;
+        });
+        reportHandler.handle(update);
+        verify(buttonMenu).petMenu(chatId);
+    }
+
 
     @Test
     void getPetsOfParentTest() throws PhotoUploadException {
@@ -60,19 +101,23 @@ class ReportHandlerTest {
         Update update = mock(Update.class);
         Message message = mock(Message.class);
         Chat chat = mock(Chat.class);
+        SendResponse response = mock(SendResponse.class);
         Report report = new Report();
+
         Parent parent = new Parent();
         Pet pet = new Pet();
+        parent.setPets(List.of(pet));
         pet.setParent(parent);
         pet.setReports(List.of(report));
         report.setPet(pet);
         report.setParent(parent);
+        when(response.isOk()).thenReturn(true);
         when(update.message()).thenReturn(message);
         when(message.chat()).thenReturn(chat);
         when(message.chat().id()).thenReturn(chatId);
+
+        when(parentService.findParentByChatId(chatId)).thenReturn(parent);
         when(reportService.reportFindLastByParent(any())).thenReturn(report);
-        SendResponse response = mock(SendResponse.class);
-        when(response.isOk()).thenReturn(true);
         String expected = """
                 Мы не смогли найти вашего питомца
                 """;
@@ -92,20 +137,22 @@ class ReportHandlerTest {
         Update update = mock(Update.class);
         Message message = mock(Message.class);
         Chat chat = mock(Chat.class);
-        Report report = new Report();
+        SendResponse response = mock(SendResponse.class);
         Parent parent = new Parent();
+        Report report = new Report();
         Pet pet = new Pet();
         pet.setParent(parent);
         pet.setReports(List.of(report));
         report.setPet(pet);
         report.setParent(parent);
+        parent.setPets(List.of(pet));
+        when(response.isOk()).thenReturn(true);
         when(update.message()).thenReturn(message);
         when(message.chat()).thenReturn(chat);
         when(message.chat().id()).thenReturn(chatId);
+        when(parentService.findParentByChatId(chatId)).thenReturn(parent);
         when(petService.findAllByChatId(chatId)).thenReturn(List.of(pet));
         when(reportService.reportFindLastByParent(any())).thenReturn(report);
-        SendResponse response = mock(SendResponse.class);
-        when(response.isOk()).thenReturn(true);
         String expected = """
                 Отправьте фото питомца
                 """;
@@ -135,6 +182,7 @@ class ReportHandlerTest {
         Parent parent = new Parent();
         Pet pet = new Pet();
         Pet pet2 = new Pet();
+        parent.setPets(List.of(pet, pet2));
         pet.setParent(parent);
         pet.setReports(List.of(report));
         report.setPet(pet);
@@ -142,6 +190,7 @@ class ReportHandlerTest {
         when(update.message()).thenReturn(message);
         when(message.chat()).thenReturn(chat);
         when(message.chat().id()).thenReturn(chatId);
+        when(parentService.findParentByChatId(chatId)).thenReturn(parent);
         when(petService.findAllByChatId(chatId)).thenReturn(List.of(pet, pet2));
         when(reportService.reportFindLastByParent(any())).thenReturn(report);
         SendResponse response = mock(SendResponse.class);
@@ -177,6 +226,8 @@ class ReportHandlerTest {
         Report report = new Report();
         Parent parent = new Parent();
         Pet pet = new Pet();
+        parent.setPets(List.of(pet));
+
         pet.setName("Lynx");
         pet.setParent(parent);
         pet.setReports(List.of(report));
@@ -186,6 +237,8 @@ class ReportHandlerTest {
         when(update.message()).thenReturn(message);
         when(message.chat()).thenReturn(chat);
         when(message.chat().id()).thenReturn(chatId);
+        when(parentService.findParentByChatId(chatId)).thenReturn(parent);
+
         when(reportService.reportFindLastByParent(any())).thenReturn(report);
         when(response.isOk()).thenReturn(true);
         List<Pet> pets = new ArrayList<>();
@@ -217,6 +270,8 @@ class ReportHandlerTest {
         Report report = new Report();
         Parent parent = new Parent();
         Pet pet = new Pet();
+        parent.setPets(List.of(pet));
+
         pet.setName("Lynx");
         pet.setParent(parent);
         pet.setReports(List.of(report));
@@ -227,6 +282,8 @@ class ReportHandlerTest {
 
         when(message.chat()).thenReturn(chat);
         when(message.chat().id()).thenReturn(chatId);
+        when(parentService.findParentByChatId(chatId)).thenReturn(parent);
+
         when(reportService.reportFindLastByParent(any())).thenReturn(report);
         when(response.isOk()).thenReturn(true);
         List<Pet> pets = new ArrayList<>();
@@ -252,7 +309,7 @@ class ReportHandlerTest {
         reportHandler.handle(update);
     }
 
-     @Test
+    @Test
     void ReportTestWaitingPhoto_done() throws PhotoUploadException {
         String expected = "Опишите рацион животного";
 
@@ -265,13 +322,15 @@ class ReportHandlerTest {
         Report report = new Report();
         Parent parent = new Parent();
         Pet pet = new Pet();
+        parent.setPets(List.of(pet));
+
         pet.setParent(parent);
         pet.setReports(List.of(report));
         report.setPet(pet);
         report.setParent(parent);
         report.setLastAction(WAITING_PHOTO);
         when(update.message()).thenReturn(message);
-//        when(message.photo()).thenReturn(any());
+        when(parentService.findParentByChatId(chatId)).thenReturn(parent);
         when(reportService.reportFindLastByParent(any())).thenReturn(report);
         when(message.chat()).thenReturn(chat);
         when(message.chat().id()).thenReturn(chatId);
@@ -309,17 +368,20 @@ class ReportHandlerTest {
         Report report = new Report();
         Parent parent = new Parent();
         Pet pet = new Pet();
+        parent.setPets(List.of(pet));
+
         pet.setParent(parent);
         pet.setReports(List.of(report));
         report.setPet(pet);
         report.setParent(parent);
         report.setLastAction(WAITING_PHOTO);
+        when(response.isOk()).thenReturn(true);
         when(update.message()).thenReturn(message);
         when(reportService.reportFindLastByParent(any())).thenReturn(report);
         when(message.chat()).thenReturn(chat);
         when(message.chat().id()).thenReturn(chatId);
+        when(parentService.findParentByChatId(chatId)).thenReturn(parent);
 
-        when(response.isOk()).thenReturn(true);
         when(telegramBot.execute(any())).then((invocation) -> {
             Object arg = invocation.getArgument(0);
             SendMessage messageArg = (SendMessage) arg;
@@ -343,6 +405,8 @@ class ReportHandlerTest {
         Report report = new Report();
         Parent parent = new Parent();
         Pet pet = new Pet();
+        parent.setPets(List.of(pet));
+
         pet.setParent(parent);
         pet.setReports(List.of(report));
         report.setPet(pet);
@@ -352,8 +416,10 @@ class ReportHandlerTest {
 
         when(message.chat()).thenReturn(chat);
         when(message.chat().id()).thenReturn(chatId);
-        when(reportService.reportFindLastByParent(any())).thenReturn(report);
         when(response.isOk()).thenReturn(true);
+        when(parentService.findParentByChatId(chatId)).thenReturn(parent);
+
+        when(reportService.reportFindLastByParent(any())).thenReturn(report);
         when(telegramBot.execute(any())).then((invocation) -> {
             Object arg = invocation.getArgument(0);
             SendMessage messageArg = (SendMessage) arg;
@@ -382,17 +448,21 @@ class ReportHandlerTest {
         Report report = new Report();
         Parent parent = new Parent();
         Pet pet = new Pet();
+        parent.setPets(List.of(pet));
+
         pet.setParent(parent);
         pet.setReports(List.of(report));
         report.setPet(pet);
         report.setParent(parent);
         report.setLastAction(WAITING_HEALTH_INFO);
         when(update.message()).thenReturn(message);
+        when(response.isOk()).thenReturn(true);
 
         when(message.chat()).thenReturn(chat);
         when(message.chat().id()).thenReturn(chatId);
+        when(parentService.findParentByChatId(chatId)).thenReturn(parent);
+
         when(reportService.reportFindLastByParent(any())).thenReturn(report);
-        when(response.isOk()).thenReturn(true);
         when(telegramBot.execute(any())).then((invocation) -> {
             Object arg = invocation.getArgument(0);
             SendMessage messageArg = (SendMessage) arg;
@@ -422,6 +492,8 @@ class ReportHandlerTest {
         Report report = new Report();
         Parent parent = new Parent();
         Pet pet = new Pet();
+        User user = new User();
+        parent.setPets(List.of(pet));
         pet.setParent(parent);
         pet.setReports(List.of(report));
         report.setPet(pet);
@@ -431,8 +503,11 @@ class ReportHandlerTest {
 
         when(message.chat()).thenReturn(chat);
         when(message.chat().id()).thenReturn(chatId);
-        when(reportService.reportFindLastByParent(any())).thenReturn(report);
         when(response.isOk()).thenReturn(true);
+        when(parentService.findParentByChatId(chatId)).thenReturn(parent);
+        when(userService.findUserByChatId(chatId)).thenReturn(user);
+
+        when(reportService.reportFindLastByParent(any())).thenReturn(report);
         when(telegramBot.execute(any())).then((invocation) -> {
             Object arg = invocation.getArgument(0);
             SendMessage messageArg = (SendMessage) arg;
@@ -446,7 +521,12 @@ class ReportHandlerTest {
             Assertions.assertThat(r.getLastAction()).isEqualTo(DONE);
             return r;
         });
-
+        when(userService.save(user)).then((invocation) -> {
+            Object arg = invocation.getArgument(0);
+            User u = (User) arg;
+            Assertions.assertThat(u.getLastAction()).isEqualTo(DONE);
+            return u;
+        });
         reportHandler.handle(update);
     }
 }
