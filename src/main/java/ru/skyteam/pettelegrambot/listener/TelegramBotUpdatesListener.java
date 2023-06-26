@@ -24,6 +24,7 @@ import ru.skyteam.pettelegrambot.report.ReportHandler;
 import ru.skyteam.pettelegrambot.repository.UserRepository;
 import ru.skyteam.pettelegrambot.sendContact.SendContactHandler;
 import ru.skyteam.pettelegrambot.service.UserService;
+import ru.skyteam.pettelegrambot.service.UserServiceImpl;
 
 import java.util.List;
 
@@ -38,8 +39,8 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     private final SendContactHandler sendContactHandler;
     private UserRepository userRepository;
     private User user;
-    @Autowired
-    private UserService userService;
+//    @Autowired
+    private final UserServiceImpl userService;
 
 
     @PostConstruct

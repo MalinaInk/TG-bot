@@ -104,8 +104,7 @@ public class SendContactHandler {
                             "В случае, если Вы по ошибке ввели не свой номер телефона, Вы можете связаться с " +
                             "волонтером - клавиша в главном меню");
                 } else {
-//                    user.setLastAction(WAITING_USER_PHONE);
-//                    userService.save(user);
+
                     sendMessage(chatId, "Убедитесь, что вводите номер телефона российского оператора связи, повторите попытку");
                     break;
                 }

@@ -27,5 +27,5 @@
     <include file="changelog/table/update-table/update-user-table-number.xml"/>
     <include file="changelog/table/update-table/update-user-table-v2-add-column.xml"/>
     <include file="changelog/table/update-table/update-user-table-rename.xml"/>
-
+    <include file="changelog/table/update-table/update-user-table-v3-remove-column.xml"/>
 </databaseChangeLog>

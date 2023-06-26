@@ -21,14 +21,10 @@ public class User {
     @Column(name = "last_action")
     private LastAction lastAction;
 
-    @Column(name = "phone_number")
-    private String phoneNumber;
-
     public User(Long id, Long chatId, PetType petType, String phoneNumber) {
         this.id = id;
         this.chatId = chatId;
         this.petType = petType;
-        this.phoneNumber = phoneNumber;
     }
     public User(Long id, Long chatId, PetType petType, LastAction lastAction) {
         this.id = id;
@@ -74,14 +70,6 @@ public class User {
 
     public void setLastAction(LastAction lastAction) {
         this.lastAction = lastAction;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
     }
 
     @Override
