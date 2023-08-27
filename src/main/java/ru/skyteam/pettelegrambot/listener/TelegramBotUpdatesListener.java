@@ -39,7 +39,6 @@ public class TelegramBotUpdatesListener implements UpdatesListener {
     private final SendContactHandler sendContactHandler;
     private UserRepository userRepository;
     private User user;
-//    @Autowired
     private final UserServiceImpl userService;
 
 
